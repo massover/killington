@@ -5,3 +5,6 @@ db:
 	createuser -s killington
 	createdb --owner=killington killington_local
 	createdb --owner=killington killington_test
+
+serve:
+	honcho -f Procfile.dev start

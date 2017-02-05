@@ -13,3 +13,5 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+CELERY_ALWAYS_EAGER = True

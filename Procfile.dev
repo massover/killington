@@ -1,0 +1,2 @@
+web: PYTHONUNBUFFERED=true python manage.py runserver
+worker: PYTHONUNBUFFERED=true celery -A killington worker -l info
