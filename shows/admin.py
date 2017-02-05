@@ -3,7 +3,13 @@ from .models import (
     Show,
     ShowTime,
     Lottery,
+    User,
 )
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Show)
