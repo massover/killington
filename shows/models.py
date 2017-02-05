@@ -31,3 +31,5 @@ numeric_validator = RegexValidator(r'^[0-9]*$', _('Only numbers allowed.'))
 class User(AbstractUser):
     date_of_birth = models.DateTimeField(_('date of birth'))
     zipcode = models.CharField(_('ZIP code'), max_length=5, validators=[numeric_validator])
+
+    REQUIRED_FIELDS = ['email', 'date_of_birth', 'zipcode']
