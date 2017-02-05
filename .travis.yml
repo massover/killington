@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.5"
+env:
+  - DJANGO_SETTINGS_MODULE=killington.settings.test
+services:
+  - postgresql
+install:
+  - pip install -r requirements.txt
+before_script:
+  - make db
+script:
+  - python manage.py test
