@@ -1,5 +1,7 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
 
 
 class Show(models.Model):
@@ -24,5 +26,8 @@ class Lottery(models.Model):
         verbose_name_plural = 'Lotteries'
 
 
+numeric_validator = RegexValidator(r'^[0-9]*$', _('Only numbers allowed.'))
+
 class User(AbstractUser):
-    pass
+    date_of_birth = models.DateTimeField(_('date of birth'))
+    zipcode = models.CharField(_('ZIP code'), max_length=5, validators=[numeric_validator])
