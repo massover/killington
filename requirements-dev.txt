@@ -2,7 +2,7 @@ honcho
 pytest
 pytest-django
 factory_boy
-pytest-factoryby
+pytest-factoryboy
 
 
 -r requirements.txt
