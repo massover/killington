@@ -15,3 +15,4 @@ DATABASES = {
 }
 
 CELERY_ALWAYS_EAGER = True
+CAPTCHA_API_KEY = 'Not used in testing'

@@ -46,3 +46,6 @@ DEBUG_TOOLBAR_PANELS = [
 INTERNAL_IPS = ['127.0.0.1', ]
 
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+with open('.2captcha', 'r') as fp:
+    CAPTCHA_API_KEY = fp.read()

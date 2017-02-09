@@ -9,3 +9,4 @@ DATABASES = {'default': db_from_env}
 
 SECRET_KEY = os.environ['SECRET_KEY']
 BROKER_URL = os.environ['RABBITMQ_BIGWIG_URL']
+CAPTCHA_API_KEY = os.environ['CAPTCHA_API_KEY']
