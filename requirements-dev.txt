@@ -1,3 +1,8 @@
-honcho==0.7.1
+honcho
+pytest
+pytest-django
+factory_boy
+pytest-factoryby
+
 
 -r requirements.txt
