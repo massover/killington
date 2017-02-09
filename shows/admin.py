@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Show,
-    ShowTime,
+    Performance,
     Lottery,
     User,
 )
@@ -17,7 +17,7 @@ class ShowAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(ShowTime)
+@admin.register(Performance)
 class ShowTimeAdmin(admin.ModelAdmin):
     pass
 
