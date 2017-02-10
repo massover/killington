@@ -2,7 +2,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 import pytest
-from pytest_factoryboy import register, LazyFixture
+from pytest_factoryboy import register
 
 from ..factories import (LotteryFactory, ShowFactory, PerformanceFactory,
                          UserFactory)
