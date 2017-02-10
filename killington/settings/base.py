@@ -116,3 +116,6 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html#django-celery-results-using-the-django-orm-cache-as-a-result-backend
 CELERY_RESULT_BACKEND = 'django-db'
+
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html?highlight=SOFT_TIME_LIMIT#std:setting-task_time_limit
+CELERYD_CELERYD_TASK_TIME_LIMIT = 60
