@@ -44,7 +44,7 @@ class LotteryAdmin(admin.ModelAdmin):
             return
 
         for lottery in queryset.all():
-            tasks.enter_user_in_active_lottery(user.id, lottery.id)
+            tasks.enter_user_in_active_lottery.delay(user.id, lottery.id)
 
         message = 'Entering {} in the lottery'.format(user.email)
         messages.success(request, message)
