@@ -9,7 +9,7 @@ from .managers import ActiveLotteryManager
 
 class Show(models.Model):
     name = models.CharField(max_length=31)
-    subscribed_users = models.ManyToManyField('User')
+    subscribed_users = models.ManyToManyField('User', blank=True)
 
     def __str__(self):
         return '%s' % self.name
@@ -33,7 +33,7 @@ class Lottery(models.Model):
     nonce = models.CharField(max_length=31)
     starts_at = models.DateTimeField()
     processed = models.BooleanField(default=False)
-    entered_users = models.ManyToManyField('User')
+    entered_users = models.ManyToManyField('User', blank=True)
 
     class Meta:
         verbose_name_plural = 'Lotteries'
