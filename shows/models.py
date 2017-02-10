@@ -12,7 +12,7 @@ class Show(models.Model):
     subscribed_users = models.ManyToManyField('User')
 
     def __str__(self):
-        return 'Show: %s' % self.name
+        return '%s' % self.name
 
 
 class Performance(models.Model):
@@ -21,7 +21,7 @@ class Performance(models.Model):
 
     def __str__(self):
         starts_at = date_format(self.starts_at, 'DATETIME_FORMAT')
-        return 'Performance: %s %s' % (self.show.name, starts_at)
+        return '%s %s' % (self.show.name, starts_at)
 
 
 class Lottery(models.Model):
@@ -50,7 +50,7 @@ class Lottery(models.Model):
 
     def __str__(self):
         starts_at = date_format(self.starts_at, 'DATETIME_FORMAT')
-        return 'Lottery: %s %s' % (self.performance.show.name, starts_at)
+        return '%s %s' % (self.performance.show.name, starts_at)
 
 
 numeric_validator = RegexValidator(r'^[0-9]*$', _('Only numbers allowed.'))
