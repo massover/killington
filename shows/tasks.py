@@ -13,7 +13,7 @@ def process_active_lotteries():
         lottery.save()
 
 
-@shared_task()
+@shared_task(max_retries=3)
 def enter_user_in_active_lottery(user_id, lottery_id):
     lottery = Lottery.objects.get(id=lottery_id)
     captcha_id = broadway.get_captcha_id(lottery)
