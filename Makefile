@@ -12,7 +12,10 @@ migrate:
 	python manage.py migrate
 
 
-db: dropdb createdb migrate
+db: dropdb createdb migrate seeds
+
+seeds:
+	python manage.py seeds
 
 serve:
 	honcho -f Procfile.dev start

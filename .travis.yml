@@ -8,7 +8,7 @@ services:
 install:
   - pip install -r requirements-dev.txt
 before_script:
-  - make db
+  - make dropdb createdb migrate
 script:
   - piprot
   - make test

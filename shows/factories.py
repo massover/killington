@@ -10,7 +10,9 @@ class UserFactory(factory.DjangoModelFactory):
     last_name = factory.Faker('last_name')
     email = factory.Faker('email')
     username = factory.Faker('pystr')
-    password = "password"
+    is_superuser = factory.Faker('pybool')
+    is_staff = factory.Faker('pybool')
+    password = factory.PostGenerationMethodCall('set_password', 'password')
 
     class Meta:
         model = User
@@ -18,6 +20,7 @@ class UserFactory(factory.DjangoModelFactory):
 
 class ShowFactory(factory.DjangoModelFactory):
     name = factory.Faker('word')
+    url = factory.Faker('url')
     subscribed_users = factory.RelatedFactory(UserFactory)
 
     class Meta:
