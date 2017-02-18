@@ -45,9 +45,10 @@ class PerformanceFactory(factory.DjangoModelFactory):
 
 class LotteryFactory(factory.DjangoModelFactory):
     performance = factory.SubFactory(PerformanceFactory)
-    lottery_id = factory.Faker('pyint')
+    external_performance_id = factory.Faker('pyint')
     nonce = factory.Faker('pystr')
     starts_at = timezone.now()
+    ends_at = timezone.now()
     processed = factory.Faker('pybool')
 
     class Meta:
