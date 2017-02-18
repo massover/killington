@@ -2,7 +2,6 @@ honcho
 piprot
 pytest
 pytest-django
-factory_boy
 pytest-factoryboy
 werkzeug
 
