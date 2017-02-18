@@ -13,4 +13,10 @@ app.conf.CELERYBEAT_SCHEDULE = {
         'schedule': crontab(minute=0, hour='*'),
         'args': None,
     },
+    'run-shows-spider-every-hour': {
+        'task': 'shows.tasks.crawl_lotteries',
+        'schedule': crontab(minute=15, hour='*'),
+        'args': None,
+    },
 }
+
