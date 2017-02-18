@@ -1,5 +1,8 @@
 from celery import shared_task
+from scrapy.crawler import CrawlerProcess
+
 from .models import Lottery, User
+from .spiders import ShowsSpider
 from . import broadway
 
 
@@ -22,3 +25,12 @@ def enter_user_in_active_lottery(user_id, lottery_id):
     user = User.objects.get(id=user_id)
     broadway.enter_lottery(g_recaptcha_response, lottery, user)
     lottery.entered_users.add(user)
+
+
+@shared_task
+def run_shows_spider():
+    process = CrawlerProcess({
+        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+    })
+    process.crawl(ShowsSpider)
+    process.start()
