@@ -30,8 +30,8 @@ class PerformanceAdmin(admin.ModelAdmin):
 class LotteryAdmin(admin.ModelAdmin):
     action_form = EnterUserInLotteryForm
     actions = ['enter_user_in_lottery', ]
-    list_display = ('performance', 'lottery_id', 'nonce', 'starts_at',
-                    'processed',)
+    list_display = ('performance', 'state', 'starts_at', 'ends_at',
+                    'external_performance_id', 'nonce', 'processed',)
 
     def enter_user_in_lottery(self, request, queryset):
         email = request.POST['email']
