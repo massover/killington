@@ -10,8 +10,8 @@ class ShowsSpider(scrapy.Spider):
 
     def __init__(self, *args, **kwargs):
         super(ShowsSpider, self).__init__(*args, **kwargs)
-        if kwargs.get('queryset'):
-            self.start_urls = kwargs['queryset'].values_list('url', flat=True)
+        if kwargs.get('start_urls'):
+            self.start_urls = kwargs['start_urls']
         else:
             self.start_urls = Show.objects.values_list('url', flat=True)
 
