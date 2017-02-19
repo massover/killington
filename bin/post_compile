@@ -1,12 +1,2 @@
-echo 'source version'
-echo $SOURCE_VERSION
-echo 'heroku slug commit'
-echo $HEROKU_SLUG_COMMIT
-
-echo 'python manage.py collectstatic --no-input'
-python manage.py collectstatic --no-input
-
-echo 'python manage.py migrate'
+echo 'python manage.py migrate --no-input'
 python manage.py migrate --no-input
-
-
