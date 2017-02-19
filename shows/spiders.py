@@ -15,7 +15,7 @@ class ShowsSpider(scrapy.Spider):
 
     def parse(self, response):
         show = Show.objects.get(url=response.url)
-        tzinfo = pytz.timezone('US/Eastern')
+        eastern = pytz.timezone('US/Eastern')
 
         for lottery_row in response.css('.hide-for-tablets .lotteries-row'):
             raw_performace_starts_at = lottery_row.css('.lotteries-time::text').extract_first()
@@ -24,17 +24,18 @@ class ShowsSpider(scrapy.Spider):
             # 02/18/17 8:00 pm
             performance, _ = Performance.objects.get_or_create(
                 show=show,
-                starts_at=performance_starts_at_utc.replace(tzinfo=tzinfo)
+                starts_at=eastern.localize(performance_starts_at_utc)
             )
 
             if lottery_row.css('.lotteries-status').css('span.active'):
                 raw_lottery_ends_at = lottery_row.css('.lotteries-status::text').extract()[2]
                 lottery_ends_at = raw_lottery_ends_at.split('Closes at')[1]
                 lottery_ends_at_utc = parse(lottery_ends_at.strip())
+
                 # Closes at 2:00 pm
                 lottery, created = Lottery.objects.get_or_create(
                     performance=performance,
-                    ends_at=lottery_ends_at_utc.replace(tzinfo=tzinfo),
+                    ends_at=eastern.localize(lottery_ends_at_utc)
                 )
                 if created:
                     lottery.starts_at = timezone.now()
@@ -52,7 +53,7 @@ class ShowsSpider(scrapy.Spider):
 
                 lottery, _ = Lottery.objects.get_or_create(
                     performance=performance,
-                    starts_at=lottery_starts_at_utc.replace(tzinfo=tzinfo)
+                    starts_at=eastern.localize(lottery_starts_at_utc)
                 )
 
             elif lottery_row.css('.lotteries-status').css('span.closed'):

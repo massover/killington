@@ -30,8 +30,20 @@ class PerformanceAdmin(admin.ModelAdmin):
 class LotteryAdmin(admin.ModelAdmin):
     action_form = EnterUserInLotteryForm
     actions = ['enter_user_in_lottery', ]
-    list_display = ('performance', 'state', 'starts_at', 'ends_at',
+    list_display = ('get_show_name', 'state', 'starts_at', 'ends_at',
+                    'get_performance_starts_at',
                     'external_performance_id', 'nonce', 'processed',)
+
+
+    def get_show_name(self, obj):
+        return obj.performance.show.name
+
+    get_show_name.short_description = 'Show Name'
+
+    def get_performance_starts_at(self, obj):
+        return obj.performance.starts_at
+
+    get_performance_starts_at.short_description = 'Performance Starts At'
 
     def enter_user_in_lottery(self, request, queryset):
         email = request.POST['email']

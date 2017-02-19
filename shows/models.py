@@ -23,7 +23,7 @@ class Performance(models.Model):
     starts_at = models.DateTimeField()
 
     def __str__(self):
-        starts_at = date_format(self.starts_at, 'DATETIME_FORMAT')
+        starts_at = date_format(self.starts_at, 'DATETIME_FORMAT', use_l10n=True)
         return '%s %s' % (self.show.name, starts_at)
 
 
@@ -73,7 +73,7 @@ class Lottery(models.Model):
         return '/enter-lottery/?lottery={}&window=popup'.format(self.external_performance_id)
 
     def __str__(self):
-        starts_at = date_format(self.starts_at, 'DATETIME_FORMAT')
+        starts_at = date_format(self.starts_at, 'DATETIME_FORMAT', use_l10n=True)
         return '%s %s' % (self.performance.show.name, starts_at)
 
 
