@@ -10,7 +10,7 @@ from . import broadway
 def process_active_lotteries():
     for lottery in Lottery.active_objects.all():
         for user in lottery.performance.show.subscribed_users.all():
-            enter_user_in_active_lottery.delay(lottery.id, user.id)
+            enter_user_in_active_lottery.delay(user.id, lottery.id)
             lottery.entered_users.add(user)
         lottery.processed = True
         lottery.save()
