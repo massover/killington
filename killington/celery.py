@@ -10,7 +10,7 @@ app.autodiscover_tasks()
 app.conf.CELERYBEAT_SCHEDULE = {
     'process-active-lotteries-every-hour': {
         'task': 'shows.tasks.process_active_lotteries',
-        'schedule': crontab(minute=0, hour='*'),
+        'schedule': crontab(minute=45, hour='*'),
         'args': None,
     },
     'run-shows-spider-every-hour': {
