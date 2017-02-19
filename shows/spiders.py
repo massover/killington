@@ -1,5 +1,4 @@
 import pytz
-from django.utils import timezone
 
 from dateutil.parser import parse
 import scrapy
@@ -9,9 +8,12 @@ from .models import Performance, Lottery, Show
 class ShowsSpider(scrapy.Spider):
     name = "shows"
 
-    def start_requests(self):
-        for url in Show.objects.values_list('url', flat=True):
-            yield self.make_requests_from_url(url)
+    def __init__(self, *args, **kwargs):
+        super(ShowsSpider, self).__init__(*args, **kwargs)
+        if kwargs.get('queryset'):
+            self.start_urls = kwargs['queryset'].values_list('url', flat=True)
+        else:
+            self.start_urls = Show.objects.values_list('url', flat=True)
 
     def parse(self, response):
         show = Show.objects.get(url=response.url)

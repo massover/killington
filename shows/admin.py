@@ -20,6 +20,11 @@ class UserAdmin(admin.ModelAdmin):
 class ShowAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
+    def run_shows_spider(self, request, queryset):
+        tasks.run_shows_spider.delay(queryset=queryset)
+
+    run_shows_spider.short_description = "Run Spider For Shows"
+
 
 @admin.register(Performance)
 class PerformanceAdmin(admin.ModelAdmin):
