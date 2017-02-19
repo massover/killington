@@ -24,3 +24,7 @@ def test_active_lottery_manager_ignores_future_lotteries(active_lottery):
     assert Lottery.active_objects.count() == 0
 
 
+@pytest.mark.django_db
+@pytest.mark.parametrize('active_lottery__ends_at', [timezone.now()])
+def test_active_lottery_manager_ignores_past_lotteries(active_lottery):
+    assert Lottery.active_objects.count() == 0

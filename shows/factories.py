@@ -1,5 +1,5 @@
 import factory
-from django.utils import timezone
+import pytz
 
 from .models import Lottery, Performance, Show, User
 
@@ -40,7 +40,7 @@ class ShowFactory(factory.DjangoModelFactory):
 
 class PerformanceFactory(factory.DjangoModelFactory):
     show = factory.SubFactory(ShowFactory)
-    starts_at = timezone.now()
+    starts_at = factory.Faker('date_time', tzinfo=pytz.utc)
 
     class Meta:
         model = Performance
@@ -50,8 +50,8 @@ class LotteryFactory(factory.DjangoModelFactory):
     performance = factory.SubFactory(PerformanceFactory)
     external_performance_id = factory.Faker('pyint')
     nonce = factory.Faker('pystr')
-    starts_at = timezone.now()
-    ends_at = timezone.now()
+    starts_at = factory.Faker('date_time', tzinfo=pytz.utc)
+    ends_at = factory.Faker('date_time', tzinfo=pytz.utc)
     processed = factory.Faker('pybool')
 
     class Meta:
