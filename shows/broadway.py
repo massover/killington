@@ -45,7 +45,7 @@ def enter_lottery(g_recaptcha_response, lottery, user):
         'dlslot_country': 2,
         'g-recaptcha-response': g_recaptcha_response,
         'dlslot_website': '',
-        'dlslot_performance_id': lottery.lottery_id,
+        'dlslot_performance_id': lottery.external_performance_id,
         'dlslot_nonce': lottery.nonce,
         '_wp_http_referer': lottery.http_referer,
     }
