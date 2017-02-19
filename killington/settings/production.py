@@ -1,4 +1,7 @@
+import os
+
 import dj_database_url
+import raven
 from .base import *
 
 DEBUG = False
@@ -10,3 +13,14 @@ DATABASES = {'default': db_from_env}
 SECRET_KEY = os.environ['SECRET_KEY']
 CELERY_BROKER_URL = os.environ['RABBITMQ_BIGWIG_URL']
 CAPTCHA_API_KEY = os.environ['CAPTCHA_API_KEY']
+
+INSTALLED_APPS += [
+    'raven.contrib.django.raven_compat',
+]
+
+RAVEN_CONFIG = {
+    'dsn': os.environ['SENTRY_DSN'],
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(BASE_DIR),
+}

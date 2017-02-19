@@ -1,11 +1,12 @@
 from .base import *
+import raven
 
 DEBUG = True
 
 SECRET_KEY = 'ia!%$GLg!gsDf8$^cq$SR+ZUkglYUmVNLYPeZb-lxjM_V4#7Rw'
 
 INSTALLED_APPS += [
-    'debug_toolbar'
+    'debug_toolbar',
 ]
 
 DATABASES = {
@@ -49,3 +50,15 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 
 with open('.2captcha', 'r') as fp:
     CAPTCHA_API_KEY = fp.read()
+
+# INSTALLED_APPS += [
+#     'raven.contrib.django.raven_compat',
+# ]
+#
+# with open('.sentrydsn', 'r') as fp:
+#     RAVEN_CONFIG = {
+#         'dsn': fp.read(),
+#         # If you are using git, you can also automatically configure the
+#         # release based on the git info.
+#         'release': raven.fetch_git_sha(BASE_DIR),
+#     }

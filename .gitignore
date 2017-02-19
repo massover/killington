@@ -3,4 +3,5 @@ __pycache__/
 staticfiles/
 celerybeat.pid
 .2captcha
+.sentrydsn
 .cache/
