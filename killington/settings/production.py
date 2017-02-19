@@ -15,7 +15,6 @@ CAPTCHA_API_KEY = os.environ['CAPTCHA_API_KEY']
 INSTALLED_APPS += [
     'raven.contrib.django.raven_compat',
 ]
-
 RAVEN_CONFIG = {
     'dsn': os.environ['SENTRY_DSN'],
     # If you are using git, you can also automatically configure the
