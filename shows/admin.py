@@ -22,7 +22,7 @@ class ShowAdmin(admin.ModelAdmin):
     actions = ['run_shows_spider']
 
     def run_shows_spider(self, request, queryset):
-        start_urls = queryset.values_list('urls', flat=True)
+        start_urls = queryset.values_list('url', flat=True)
         tasks.run_shows_spider.delay(start_urls=list(start_urls))
 
     run_shows_spider.short_description = "Run Spider For Shows"
