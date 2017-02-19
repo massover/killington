@@ -15,7 +15,7 @@ migrate:
 db: dropdb createdb migrate seeds
 
 seeds:
-	python manage.py seeds
+	python manage.py seed users shows
 
 serve:
 	honcho -f Procfile.dev start
