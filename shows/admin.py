@@ -24,6 +24,12 @@ class ShowAdmin(admin.ModelAdmin):
     def run_shows_spider(self, request, queryset):
         start_urls = queryset.values_list('url', flat=True)
         tasks.run_shows_spider.delay(start_urls=list(start_urls))
+        count = queryset.count()
+        if count == 1:
+            message = 'Running spider for 1 show'
+        else:
+            message = 'Running spider for {} shows'.format(count)
+        messages.success(request, message)
 
     run_shows_spider.short_description = "Run Spider For Shows"
 
