@@ -31,6 +31,7 @@ class Lottery(models.Model):
     ACTIVE_STATE = 'active'
     PENDING_STATE = 'pending'
     CLOSED_STATE = 'closed'
+    INVALID_STATE = 'invalid'
 
     objects = models.Manager()
     active_objects = ActiveLotteryManager()
@@ -38,7 +39,7 @@ class Lottery(models.Model):
     performance = models.OneToOneField(Performance)
     external_performance_id = models.IntegerField(blank=True, null=True)
     nonce = models.CharField(max_length=31, blank=True, null=True)
-    starts_at = models.DateTimeField(blank=True, null=True)
+    starts_at = models.DateTimeField(blank=True, default=timezone.now)
     ends_at = models.DateTimeField(blank=True, null=True)
     processed = models.BooleanField(default=False)
     entered_users = models.ManyToManyField('User', blank=True)
@@ -57,7 +58,9 @@ class Lottery(models.Model):
     def state(self):
         if timezone.now() < self.starts_at:
             return self.PENDING_STATE
-        if self.starts_at <= timezone.now() < self.ends_at:
+        elif self.starts_at <= timezone.now() and self.ends_at is None:
+            return self.INVALID_STATE
+        elif self.starts_at <= timezone.now() < self.ends_at:
             return self.ACTIVE_STATE
         else:
             return self.CLOSED_STATE

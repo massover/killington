@@ -33,13 +33,10 @@ class ShowsSpider(scrapy.Spider):
                 lottery_ends_at_utc = parse(lottery_ends_at.strip())
 
                 # Closes at 2:00 pm
-                lottery, created = Lottery.objects.get_or_create(
+                lottery, _ = Lottery.objects.get_or_create(
                     performance=performance,
                     ends_at=eastern.localize(lottery_ends_at_utc)
                 )
-                if created:
-                    lottery.starts_at = timezone.now()
-                    lottery.save()
 
                 next_page = lottery_row.css('.lotteries-right a::attr(href)').extract_first()
                 request = scrapy.Request(next_page, callback=self.parse_lottery)
