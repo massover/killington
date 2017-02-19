@@ -44,16 +44,6 @@ def test_closed_lottery_state():
 
 def test_invalid_lottery_state():
     lottery = LotteryFactory.build(
-        starts_at=datetime(2000, 1, 1),
-        ends_at=datetime(2000, 1, 1),
-    )
-
-    with pytest.raises(ValidationError):
-        lottery.clean()
-
-
-def test_lottery_starts_at_must_be_before_ends_at():
-    lottery = LotteryFactory.build(
         starts_at=timezone.now() - timedelta(hours=2),
         ends_at=None,
     )
@@ -66,10 +56,28 @@ def test_lottery_starts_at_has_default_value(performance):
     assert isinstance(lottery.starts_at, datetime)
 
 
-def test_lottery_starts_at_must_not_equal_ends_at():
+def test_lottery_clean_starts_at_must_not_equal_ends_at():
     lottery = LotteryFactory.build(
         starts_at=datetime(2000, 1, 1),
         ends_at=datetime(2000, 1, 1),
     )
     with pytest.raises(ValidationError):
         lottery.clean()
+
+
+def test_lottery_clean_starts_at_must_be_before_ends_at():
+    lottery = LotteryFactory.build(
+        starts_at=datetime(3000, 3, 3),
+        ends_at=datetime(2000, 1, 1),
+    )
+
+    with pytest.raises(ValidationError):
+        lottery.clean()
+
+
+def test_lottery_clean_allows_empty_ends_at():
+    lottery = LotteryFactory.build(
+        starts_at=datetime(3000, 3, 3),
+        ends_at=None,
+    )
+    lottery.clean()

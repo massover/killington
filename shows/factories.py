@@ -3,6 +3,7 @@ import pytz
 
 from .models import Lottery, Performance, Show, User
 
+
 class UserFactory(factory.DjangoModelFactory):
     date_of_birth = factory.Faker('date')
     zipcode = factory.Faker('zipcode')

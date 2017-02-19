@@ -48,6 +48,9 @@ class Lottery(models.Model):
         verbose_name_plural = 'Lotteries'
 
     def clean(self):
+        if self.ends_at is None:
+            return
+
         if self.starts_at > self.ends_at:
             raise ValidationError(_('Starts at time must begin before ends at time'))
 
