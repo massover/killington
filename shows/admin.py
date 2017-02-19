@@ -40,7 +40,6 @@ class LotteryAdmin(admin.ModelAdmin):
                     'get_performance_starts_at',
                     'external_performance_id', 'nonce', 'processed',)
 
-
     def get_show_name(self, obj):
         return obj.performance.show.name
 

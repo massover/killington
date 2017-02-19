@@ -12,6 +12,22 @@ SECRET_KEY = os.environ['SECRET_KEY']
 CELERY_BROKER_URL = os.environ['RABBITMQ_BIGWIG_URL']
 CAPTCHA_API_KEY = os.environ['CAPTCHA_API_KEY']
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        },
+    },
+}
+
 # INSTALLED_APPS += [
 #     'raven.contrib.django.raven_compat',
 # ]
