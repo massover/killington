@@ -21,24 +21,32 @@ class ShowsSpider(scrapy.Spider):
 
         for lottery_row in response.css('.hide-for-tablets .lotteries-row'):
             raw_performace_starts_at = lottery_row.css('.lotteries-time::text').extract_first()
-            performance_starts_at_utc = parse(raw_performace_starts_at.strip())
+            performance_starts_at = parse(raw_performace_starts_at.strip())
+            performance_starts_at = eastern.localize(performance_starts_at)
 
             # 02/18/17 8:00 pm
             performance, _ = Performance.objects.get_or_create(
                 show=show,
-                starts_at=eastern.localize(performance_starts_at_utc)
+                starts_at=performance_starts_at,
             )
 
             if lottery_row.css('.lotteries-status').css('span.active'):
                 raw_lottery_ends_at = lottery_row.css('.lotteries-status::text').extract()[2]
                 lottery_ends_at = raw_lottery_ends_at.split('Closes at')[1]
-                lottery_ends_at_utc = parse(lottery_ends_at.strip())
+                lottery_ends_at = parse(lottery_ends_at.strip())
+                lottery_ends_at = eastern.localize(lottery_ends_at)
 
                 # Closes at 2:00 pm
-                lottery, _ = Lottery.objects.get_or_create(
-                    performance=performance,
-                    ends_at=eastern.localize(lottery_ends_at_utc)
-                )
+                try:
+                    lottery = performance.lottery
+                    lottery.ends_at = lottery_ends_at
+                    lottery.save()
+
+                except Lottery.DoesNotExist:
+                    lottery = Lottery.objects.create(
+                        performance=performance,
+                        ends_at=lottery_ends_at,
+                    )
 
                 next_page = lottery_row.css('.lotteries-right a::attr(href)').extract_first()
                 request = scrapy.Request(next_page, callback=self.parse_lottery)
@@ -47,12 +55,13 @@ class ShowsSpider(scrapy.Spider):
 
             elif lottery_row.css('.lotteries-status').css('span.pending'):
                 raw_lottery_starts_at = lottery_row.css('.lotteries-status::text').extract()[1]
-                lottery_starts_at_utc = parse(raw_lottery_starts_at.strip())
+                lottery_starts_at = parse(raw_lottery_starts_at.strip())
+                lottery_starts_at = eastern.localize(lottery_starts_at)
                 # 02/18/17 at 11:00 am
 
                 lottery, _ = Lottery.objects.get_or_create(
                     performance=performance,
-                    starts_at=eastern.localize(lottery_starts_at_utc)
+                    starts_at=lottery_starts_at,
                 )
 
             elif lottery_row.css('.lotteries-status').css('span.closed'):
