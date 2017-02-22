@@ -120,6 +120,3 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html?highlight=SOFT_TIME_LIMIT#std:setting-task_time_limit
 CELERY_CELERYD_TASK_TIME_LIMIT = 60
-
-# http://stackoverflow.com/questions/11528739/running-scrapy-spiders-in-a-celery-task/11657239#11657239
-CELERY_CELERYD_MAX_TASKS_PER_CHILD = 1
