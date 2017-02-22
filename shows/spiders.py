@@ -2,6 +2,9 @@ import pytz
 
 from dateutil.parser import parse
 import scrapy
+from scrapy import signals
+from twisted.internet import reactor
+
 from .models import Performance, Lottery, Show
 
 
@@ -14,6 +17,15 @@ class ShowsSpider(scrapy.Spider):
             self.start_urls = kwargs['start_urls']
         else:
             self.start_urls = Show.objects.values_list('url', flat=True)
+
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super().from_crawler(crawler, *args, **kwargs)
+        crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
+        return spider
+
+    def spider_closed(self, spider):
+        reactor.stop()
 
     def parse(self, response):
         show = Show.objects.get(url=response.url)
