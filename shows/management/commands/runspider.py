@@ -9,7 +9,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         process = CrawlerProcess({
-            'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+            'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+            'ITEM_PIPELINES': {'shows.pipelines.ShowPipeline': 100}
         })
         process.crawl(ShowsSpider)
         process.start()

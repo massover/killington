@@ -30,7 +30,8 @@ def enter_user_in_active_lottery(user_id, lottery_id):
 @shared_task
 def run_shows_spider(*args, **kwargs):
     process = CrawlerProcess({
-        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+        'ITEM_PIPELINES':  {'shows.pipelines.ShowPipeline': 100}
     })
     process.crawl(ShowsSpider, *args, **kwargs)
     process.start()

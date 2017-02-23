@@ -1,11 +1,8 @@
-import pytz
-
-from dateutil.parser import parse
 import scrapy
-from scrapy import signals
-from twisted.internet import reactor
+from scrapy.loader import ItemLoader
 
-from .models import Performance, Lottery, Show
+from .models import Show
+from .items import ShowItem
 
 
 class ShowsSpider(scrapy.Spider):
@@ -18,81 +15,39 @@ class ShowsSpider(scrapy.Spider):
         else:
             self.start_urls = Show.objects.values_list('url', flat=True)
 
-    @classmethod
-    def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super().from_crawler(crawler, *args, **kwargs)
-        crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
-        return spider
-
-    def spider_closed(self, spider):
-        reactor.stop()
-
     def parse(self, response):
-        show = Show.objects.get(url=response.url)
-        eastern = pytz.timezone('US/Eastern')
+        for selector in response.css('.hide-for-tablets .lotteries-row'):
+            show_item = ItemLoader(item=ShowItem(), selector=selector)
+            show_item.add_value('url', response.url)
+            show_item.add_css('performance_starts_at', '.lotteries-time::text')
 
-        for lottery_row in response.css('.hide-for-tablets .lotteries-row'):
-            raw_performace_starts_at = lottery_row.css('.lotteries-time::text').extract_first()
-            performance_starts_at = parse(raw_performace_starts_at.strip())
-            performance_starts_at = eastern.localize(performance_starts_at)
-
-            # 02/18/17 8:00 pm
-            performance, _ = Performance.objects.get_or_create(
-                show=show,
-                starts_at=performance_starts_at,
-            )
-
-            if lottery_row.css('.lotteries-status').css('span.active'):
-                raw_lottery_ends_at = lottery_row.css('.lotteries-status::text').extract()[2]
-                lottery_ends_at = raw_lottery_ends_at.split('Closes at')[1]
-                lottery_ends_at = parse(lottery_ends_at.strip())
-                lottery_ends_at = eastern.localize(lottery_ends_at)
-
-                # Closes at 2:00 pm
-                try:
-                    lottery = performance.lottery
-                    lottery.ends_at = lottery_ends_at
-                    lottery.save()
-
-                except Lottery.DoesNotExist:
-                    lottery = Lottery.objects.create(
-                        performance=performance,
-                        ends_at=lottery_ends_at,
-                    )
-
-                next_page = lottery_row.css('.lotteries-right a::attr(href)').extract_first()
-                request = scrapy.Request(next_page, callback=self.parse_lottery)
-                request.meta['lottery'] = lottery
-                yield request
-
-            elif lottery_row.css('.lotteries-status').css('span.pending'):
-                raw_lottery_starts_at = lottery_row.css('.lotteries-status::text').extract()[1]
-                lottery_starts_at = parse(raw_lottery_starts_at.strip())
-                lottery_starts_at = eastern.localize(lottery_starts_at)
-                # 02/18/17 at 11:00 am
-
-                lottery, _ = Lottery.objects.get_or_create(
-                    performance=performance,
-                    starts_at=lottery_starts_at,
+            if selector.css('.lotteries-status').css('span.active'):
+                show_item.add_css('lottery_ends_at', '.lotteries-status::text')
+                next_page = selector.css('.lotteries-right a::attr(href)').extract_first()
+                yield scrapy.Request(
+                    next_page,
+                    callback=self.parse_callback,
+                    meta={'show_item': show_item.load_item()}
                 )
 
-            elif lottery_row.css('.lotteries-status').css('span.closed'):
+            elif selector.css('.lotteries-status').css('span.pending'):
+                show_item.add_css('lottery_starts_at', '.lotteries-status::text')
+                yield show_item.load_item()
+
+            elif selector.css('.lotteries-status').css('span.closed'):
                 pass
 
 
-    def parse_lottery(self, response):
-        lottery = response.meta['lottery']
-        nonce = response.xpath(
+    def parse_callback(self, response):
+        show_item = response.meta['show_item']
+        show_item = ItemLoader(item=show_item, response=response)
+        show_item.add_xpath(
+            'lottery_nonce',
             ".//input[starts-with(@id, 'dlslot_nonce')]/@value"
-        ).extract_first()
-        if lottery.nonce != nonce:
-            lottery.nonce = nonce
-
-
-        external_performance_id = response.xpath(
+        )
+        show_item.add_xpath(
+            'lottery_external_performance_id',
             ".//input[starts-with(@name, 'dlslot_performance_id')]/@value"
-        ).extract_first()
-        if lottery.external_performance_id != external_performance_id:
-            lottery.external_performance_id = external_performance_id
+        )
+        yield show_item.load_item()
 
-        lottery.save()
