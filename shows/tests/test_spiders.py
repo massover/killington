@@ -1,5 +1,3 @@
-import pytest
-
 from shows.items import ShowItem
 from ..spiders import ShowsSpider
 
@@ -34,7 +32,7 @@ def test_show_spider_parse_callback(active_lottery_form_response):
     assert show_item['lottery_external_performance_id'] == '209064'
 
 
-def test_show_spider_parse(pending_lottery_list_response):
+def test_show_spider_parse_pending(pending_lottery_list_response):
     start_urls = ['http://example.com']
     spider = ShowsSpider(start_urls=start_urls)
     show_item = spider.parse(pending_lottery_list_response)

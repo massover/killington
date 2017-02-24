@@ -1,4 +1,6 @@
+import pytz
 import scrapy
+from dateutil.parser import parse
 from scrapy.loader.processors import TakeFirst, Join, MapCompose
 
 
@@ -22,3 +24,9 @@ class ShowItem(scrapy.Item):
     lottery_nonce = scrapy.Field(output_processor=TakeFirst())
     lottery_external_performance_id = scrapy.Field(output_processor=TakeFirst())
     url = scrapy.Field(output_processor=TakeFirst())
+
+    def get_datetime_in_et(self, name, default=None):
+        if not self.get(name):
+            return default
+        eastern = pytz.timezone('US/Eastern')
+        return eastern.localize(parse(self[name]))

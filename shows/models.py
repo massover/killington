@@ -2,6 +2,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
@@ -27,6 +29,12 @@ class Performance(models.Model):
         return '%s %s' % (self.show.name, starts_at)
 
 
+@receiver(post_save, sender=Performance)
+def performance_post_save(sender, instance, created, **kwargs):
+    if created:
+        Lottery.objects.create(performance=instance)
+
+
 class Lottery(models.Model):
     ACTIVE_STATE = 'active'
     PENDING_STATE = 'pending'
@@ -36,10 +44,10 @@ class Lottery(models.Model):
     objects = models.Manager()
     active_objects = ActiveLotteryManager()
 
-    performance = models.OneToOneField(Performance)
+    performance = models.OneToOneField('Performance')
     external_performance_id = models.IntegerField(blank=True, null=True)
     nonce = models.CharField(max_length=31, blank=True, null=True)
-    starts_at = models.DateTimeField(blank=True, default=timezone.now)
+    starts_at = models.DateTimeField(blank=True, null=True)
     ends_at = models.DateTimeField(blank=True, null=True)
     processed = models.BooleanField(default=False)
     entered_users = models.ManyToManyField('User', blank=True)

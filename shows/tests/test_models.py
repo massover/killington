@@ -5,7 +5,16 @@ from django.utils import timezone
 import pytest
 
 from ..factories import LotteryFactory
-from ..models import Lottery
+from ..models import Lottery, Performance
+
+
+@pytest.mark.django_db
+def test_performance_post_save(show):
+    performance = Performance.objects.create(
+        show=show,
+        starts_at=timezone.now(),
+    )
+    assert performance.lottery is not None
 
 
 def test_lottery_url():
@@ -48,12 +57,6 @@ def test_invalid_lottery_state():
         ends_at=None,
     )
     assert lottery.state == Lottery.INVALID_STATE
-
-
-@pytest.mark.django_db
-def test_lottery_starts_at_has_default_value(performance):
-    lottery = Lottery.objects.create(performance=performance)
-    assert isinstance(lottery.starts_at, datetime)
 
 
 def test_lottery_clean_starts_at_must_not_equal_ends_at():

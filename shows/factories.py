@@ -1,5 +1,6 @@
 import factory
 import pytz
+from django.db.models import signals
 
 from .models import Lottery, Performance, Show, User
 
@@ -39,6 +40,7 @@ class ShowFactory(factory.DjangoModelFactory):
                 self.subscribed_users.add(subscribed_user)
 
 
+@factory.django.mute_signals(signals.post_save)
 class PerformanceFactory(factory.DjangoModelFactory):
     show = factory.SubFactory(ShowFactory)
     starts_at = factory.Faker('date_time', tzinfo=pytz.utc)

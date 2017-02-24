@@ -1,5 +1,6 @@
-from . import utils
-from .models import Performance, Show, Lottery
+from django.utils import timezone
+
+from .models import Performance, Show
 
 
 class ShowPipeline(object):
@@ -7,26 +8,27 @@ class ShowPipeline(object):
         show = Show.objects.get(url=item['url'])
         performance, _ = Performance.objects.get_or_create(
             show=show,
-            starts_at=utils.get_datetime_in_et(item['performance_starts_at'])
+            starts_at=item.get_datetime_in_et('performance_starts_at'),
         )
 
-        try:
-            lottery = performance.lottery
-        except Lottery.DoesNotExist:
-            kwargs = {'performance': performance}
-            if item.get('lottery_starts_at'):
-                kwargs['starts_at'] = utils.get_datetime_in_et(item['lottery_starts_at'])
-            if item.get('lottery_ends_at'):
-                kwargs['ends_at'] = utils.get_datetime_in_et(item.get('lottery_ends_at'))
+        lottery = performance.lottery
 
-            lottery = Lottery.objects.create(**kwargs)
-            return item
+        lottery.starts_at = item.get_datetime_in_et(
+            'lottery_starts_at',
+            lottery.starts_at
+        )
+        if lottery.starts_at is None:
+            lottery.starts_at = timezone.now()
 
-        if item.get('lottery_starts_at'):
-            lottery.starts_at = utils.get_datetime_in_et(item['lottery_starts_at'])
-        if item.get('lottery_ends_at'):
-            lottery.ends_at = utils.get_datetime_in_et(item.get('lottery_ends_at'))
-
+        lottery.ends_at = item.get_datetime_in_et(
+            'lottery_ends_at',
+            lottery.ends_at
+        )
+        lottery.nonce = item.get('lottery_nonce', lottery.nonce)
+        lottery.external_performance_id = item.get(
+            'lottery_external_performance_id',
+            lottery.external_performance_id
+        )
         lottery.save()
 
         return item

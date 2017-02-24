@@ -1,4 +1,5 @@
-from .. import utils
+from shows.tests import utils
+
 
 def test_get_datetime_in_et():
     datetime = utils.get_datetime_in_et('02/23/17 at 8:00 am')
