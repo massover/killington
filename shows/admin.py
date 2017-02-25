@@ -45,7 +45,7 @@ class LotteryAdmin(admin.ModelAdmin):
     actions = ['enter_user_in_lottery', ]
     list_display = ('get_show_name', 'state', 'starts_at', 'ends_at',
                     'get_performance_starts_at',
-                    'external_performance_id', 'nonce', 'processed',)
+                    'external_performance_id', 'nonce', 'get_entered_users_count',)
 
     def get_show_name(self, obj):
         return obj.performance.show.name
@@ -56,6 +56,11 @@ class LotteryAdmin(admin.ModelAdmin):
         return obj.performance.starts_at
 
     get_performance_starts_at.short_description = 'Performance Starts At'
+
+    def get_entered_users_count(self, obj):
+        return obj.entered_users.count()
+
+    get_entered_users_count.short_description = 'Entered Users'
 
     def enter_user_in_lottery(self, request, queryset):
         email = request.POST['email']
@@ -68,7 +73,7 @@ class LotteryAdmin(admin.ModelAdmin):
             return
 
         for lottery in queryset.all():
-            tasks.enter_user_in_active_lottery.delay(user.id, lottery.id)
+            tasks.enter_user_in_lottery.delay(user.id, lottery.id)
 
         message = 'Entering {} in the lottery'.format(user.email)
         messages.success(request, message)
