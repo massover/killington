@@ -21,9 +21,9 @@ def test_it(_, __, ___,  enterable_lottery):
 
 
 @pytest.mark.django_db
-@patch('shows.tasks.enter_user_in_lottery.delay')
 @pytest.mark.parametrize('enterable_lottery__entered_users',
                          [LazyFixture(lambda user: [user])])
+@patch('shows.tasks.enter_user_in_lottery.delay')
 def test_it_skips_users_that_were_already_entered(mock, enterable_lottery):
     tasks.process_enterable_lotteries()
 
