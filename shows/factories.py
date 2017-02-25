@@ -31,11 +31,9 @@ class ShowFactory(factory.DjangoModelFactory):
     @factory.post_generation
     def subscribed_users(self, create, extracted, **kwargs):
         if not create:
-            # Simple build, do nothing.
             return
 
         if extracted:
-            # A list of groups were passed in, use them
             for subscribed_user in extracted:
                 self.subscribed_users.add(subscribed_user)
 
@@ -55,7 +53,17 @@ class LotteryFactory(factory.DjangoModelFactory):
     nonce = factory.Faker('pystr')
     starts_at = factory.Faker('date_time', tzinfo=pytz.utc)
     ends_at = factory.Faker('date_time', tzinfo=pytz.utc)
-    processed = factory.Faker('pybool')
+    entered_users = factory.RelatedFactory(UserFactory)
 
     class Meta:
         model = Lottery
+
+    @factory.post_generation
+    def entered_users(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            print(extracted)
+            for entered_user in extracted:
+                self.entered_users.add(entered_user)
