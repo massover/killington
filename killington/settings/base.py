@@ -106,6 +106,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+)
+
 # Custom Auth User Model
 # https://docs.djangoproject.com/en/1.10/topics/auth/customizing/#substituting-a-custom-user-model
 
