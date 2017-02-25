@@ -121,4 +121,8 @@ CELERY_RESULT_BACKEND = 'django-db'
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html?highlight=SOFT_TIME_LIMIT#std:setting-task_time_limit
 CELERY_TASK_TIME_LIMIT = 60
 
+# http://stackoverflow.com/questions/22116493/run-a-scrapy-spider-in-a-celery-task
+# Using Scrapy inside celery results in a ReactorNotRestartable exception
+# This is a fix that kills the worker which ran your spider and replace it with a fresh one,
+# which prevents the reactor from being started and stopped more than once.
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 1
