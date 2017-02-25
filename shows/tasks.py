@@ -7,17 +7,16 @@ from . import broadway
 
 
 @shared_task()
-def process_active_lotteries():
-    for lottery in Lottery.active_objects.all():
+def process_enterable_lotteries():
+    for lottery in Lottery.enterable_objects.all():
         for user in lottery.performance.show.subscribed_users.all():
-            enter_user_in_active_lottery.delay(user.id, lottery.id)
-            lottery.entered_users.add(user)
-        lottery.processed = True
-        lottery.save()
+            if user.entered_lotteries.filter(id=lottery.id).exists():
+                continue
+            enter_user_in_lottery.delay(user.id, lottery.id)
 
 
 @shared_task(max_retries=3)
-def enter_user_in_active_lottery(user_id, lottery_id):
+def enter_user_in_lottery(user_id, lottery_id):
     lottery = Lottery.objects.get(id=lottery_id)
     captcha_id = broadway.get_captcha_id(lottery)
     g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)

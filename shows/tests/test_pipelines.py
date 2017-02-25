@@ -39,7 +39,7 @@ def test_show_pipeline_creates_new_performances_and_pending_lottery(show):
 
 
 @pytest.mark.django_db
-def test_show_pipeline_creates_new_performances_and_active_lottery(show):
+def test_show_pipeline_creates_new_performances_and_enterable_lottery(show):
     future = timezone.now() + timedelta(days=1)
     show_item = ShowItem({
         'url': show.url,

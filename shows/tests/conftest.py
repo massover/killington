@@ -15,7 +15,7 @@ from ..factories import (LotteryFactory, ShowFactory, PerformanceFactory,
 register(UserFactory)
 register(ShowFactory)
 register(PerformanceFactory)
-register(LotteryFactory, 'active_lottery', processed=False,
+register(LotteryFactory, 'enterable_lottery',
          starts_at=timezone.now() - timedelta(minutes=30),
          ends_at=timezone.now() + timedelta(minutes=30))
 

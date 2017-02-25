@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 
-from .managers import ActiveLotteryManager
+from .managers import EnterableLotteryManager
 
 
 class Show(models.Model):
@@ -42,15 +42,16 @@ class Lottery(models.Model):
     INVALID_STATE = 'invalid'
 
     objects = models.Manager()
-    active_objects = ActiveLotteryManager()
+    enterable_objects = EnterableLotteryManager()
 
     performance = models.OneToOneField('Performance')
     external_performance_id = models.IntegerField(blank=True, null=True)
     nonce = models.CharField(max_length=31, blank=True, null=True)
     starts_at = models.DateTimeField(blank=True, null=True)
     ends_at = models.DateTimeField(blank=True, null=True)
-    processed = models.BooleanField(default=False)
-    entered_users = models.ManyToManyField('User', blank=True)
+    entered_users = models.ManyToManyField('User',
+                                           related_name='entered_lotteries',
+                                           blank=True)
 
     class Meta:
         verbose_name_plural = 'Lotteries'
