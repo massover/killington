@@ -1,5 +1,5 @@
 from shows.items import ShowItem
-from ..spiders import ShowsSpider
+from ...spiders import ShowsSpider
 
 
 def test_show_spider_parse(active_lottery_list_response):

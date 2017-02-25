@@ -5,14 +5,14 @@ import pytz
 from django.utils import timezone
 
 from shows.tests import utils
-from ..items import ShowItem
-from ..models import Performance, Lottery
-from ..pipelines import ShowPipeline
-from ..spiders import ShowsSpider
+from ...items import ShowItem
+from ...models import Performance, Lottery
+from ...pipelines import ShowPipeline
+from ...spiders import ShowsSpider
 
 
 @pytest.mark.django_db
-def test_show_pipeline_creates_new_performances_and_pending_lottery(show):
+def test_it_creates_new_performances_and_pending_lottery(show):
     future = timezone.now() + timedelta(days=1)
     show_item = ShowItem({
         'url': show.url,
@@ -39,7 +39,7 @@ def test_show_pipeline_creates_new_performances_and_pending_lottery(show):
 
 
 @pytest.mark.django_db
-def test_show_pipeline_creates_new_performances_and_enterable_lottery(show):
+def test_it_creates_new_performances_and_enterable_lottery(show):
     future = timezone.now() + timedelta(days=1)
     show_item = ShowItem({
         'url': show.url,
@@ -68,7 +68,7 @@ def test_show_pipeline_creates_new_performances_and_enterable_lottery(show):
 
 
 @pytest.mark.django_db
-def test_show_pipeline_gets_existing_performances_and_updates_existing_lotteries(show):
+def test_it_gets_existing_performances_and_updates_existing_lotteries(show):
     past = datetime.now() - timedelta(days=1)
     past = past.replace(second=0, microsecond=0)
     eastern = pytz.timezone('US/Eastern')
