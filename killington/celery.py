@@ -8,8 +8,8 @@ app = Celery('killington')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 app.conf.CELERYBEAT_SCHEDULE = {
-    'process-active-lotteries-every-hour': {
-        'task': 'shows.tasks.process_active_lotteries',
+    'process-enterable-lotteries-every-hour': {
+        'task': 'shows.tasks.process_enterable_lotteries',
         'schedule': crontab(minute=45, hour='*'),
         'args': None,
     },
