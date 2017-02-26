@@ -31,9 +31,12 @@ LOGGING = {
 INSTALLED_APPS += [
     'raven.contrib.django.raven_compat',
 ]
+
+release = os.environ.get('SOURCE_VERSION') or os.environ.get('HEROKU_SLUG_COMMIT')
+
 RAVEN_CONFIG = {
     'dsn': os.environ['SENTRY_DSN'],
     # If you are using git, you can also automatically configure the
     # release based on the git info.
-    'release': os.environ['SOURCE_VERSION'],
+    'release': release,
 }
