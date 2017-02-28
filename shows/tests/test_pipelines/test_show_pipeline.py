@@ -13,7 +13,7 @@ from ...spiders import ShowsSpider
 
 @pytest.mark.django_db
 def test_it_creates_new_performances_and_pending_lottery(show):
-    future = timezone.now() + timedelta(days=1)
+    future = timezone.now() + timedelta(days=10)
     show_item = ShowItem({
         'url': show.url,
         'lottery_starts_at': future.strftime('%d/%m/%y at %I:%M %p'),
@@ -40,7 +40,7 @@ def test_it_creates_new_performances_and_pending_lottery(show):
 
 @pytest.mark.django_db
 def test_it_creates_new_performances_and_enterable_lottery(show):
-    future = timezone.now() + timedelta(days=1)
+    future = timezone.now() + timedelta(days=10)
     show_item = ShowItem({
         'url': show.url,
         'lottery_ends_at': future.strftime('%d/%m/%y at %I:%M %p'),
@@ -69,12 +69,12 @@ def test_it_creates_new_performances_and_enterable_lottery(show):
 
 @pytest.mark.django_db
 def test_it_gets_existing_performances_and_updates_existing_lotteries(show):
-    past = datetime.now() - timedelta(days=1)
+    past = datetime.now() - timedelta(days=10)
     past = past.replace(second=0, microsecond=0)
     eastern = pytz.timezone('US/Eastern')
     Performance.objects.create(show=show, starts_at=eastern.localize(past))
 
-    future = timezone.now() + timedelta(days=1)
+    future = timezone.now() + timedelta(days=10)
     show_item = ShowItem({
         'url': show.url,
         'lottery_ends_at': future.strftime('%d/%m/%y at %I:%M %p'),

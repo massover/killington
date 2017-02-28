@@ -4,6 +4,7 @@ pudb
 pytest
 pytest-django
 pytest-factoryboy
+pytest-pudb
 werkzeug
 
 
