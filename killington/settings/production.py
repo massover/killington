@@ -1,4 +1,5 @@
 import os
+import sys
 import dj_database_url
 from .base import *
 
@@ -23,7 +24,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO')
         },
     },
 }
@@ -38,5 +39,5 @@ RAVEN_CONFIG = {
     'dsn': os.environ['SENTRY_DSN'],
     # If you are using git, you can also automatically configure the
     # release based on the git info.
-    'release': release,
+    'release': release or '2',
 }
