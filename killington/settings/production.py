@@ -19,6 +19,8 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'level':'INFO',
+            'strm': sys.stdout,
         },
     },
     'loggers': {
