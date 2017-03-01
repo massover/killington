@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8" />
+        <title>NYC Broadway Club</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
+        <link href="{% static 'shows/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'shows/css/pe-icon-7-stroke.css' %}" rel="stylesheet">
+        <link href="{% static 'shows/css/style.css' %}" rel="stylesheet">
+        <link href="{% static 'shows/css/colors/default.css' %}" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="https://use.fontawesome.com/4cb3562526.js"></script>
+
+    </head>
+
+
+    <body>
+        {% include 'shows/navbar.html' %}
+
+        {% block content %}
+
+        {% endblock %}
+
+        {% block footer %}
+            <script src="{% static 'shows/js/jquery-2.1.4.min.js' %}"></script>
+            <script src="{% static 'shows/js/bootstrap.min.js' %}"></script>
+
+        {% endblock %}
+
+    </body>
+</html>
