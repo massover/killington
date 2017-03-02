@@ -1,12 +1,16 @@
-from django.views.generic import TemplateView
-import logging
+from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .forms import UserForm
+from .models import User
 
-logger = logging.getLogger(__name__)
 
-class LandingPageView(TemplateView):
+class LandingPageView(CreateView):
     template_name = 'shows/landing_page.html'
+    model = User
+    form_class = UserForm
+    success_url = reverse_lazy('subscribe')
 
-    def get(self, request, *args, **kwargs):
-        response = super(LandingPageView, self).get(request, *args, **kwargs)
-        logger.info('hello world!!!')
-        return response
+
+def subscribe(request):
+    return HttpResponse()
