@@ -39,6 +39,16 @@ body {
   font-size: 14px;
   line-height: 22px;
   overflow-x:hidden;
+  background-color: #eee;
+}
+
+.thumbnail {
+    padding-top: 20px;
+}
+
+.subscription {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 ::selection{

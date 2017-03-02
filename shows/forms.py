@@ -42,4 +42,10 @@ class UserForm(forms.ModelForm):
 
 
 class SubscriptionForm(forms.Form):
-    pass
+    hamilton = fields.BooleanField()
+    wicked = fields.BooleanField()
+    lion_king = fields.BooleanField()
+
+    aladdin = fields.BooleanField()
+    on_your_feet = fields.BooleanField()
+    cats = fields.BooleanField()

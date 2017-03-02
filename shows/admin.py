@@ -20,6 +20,7 @@ class UserAdmin(admin.ModelAdmin):
 class ShowAdmin(admin.ModelAdmin):
     list_display = ('name', )
     actions = ['run_shows_spider']
+    filter_horizontal = ('subscribed_users', )
 
     def run_shows_spider(self, request, queryset):
         start_urls = queryset.values_list('url', flat=True)

@@ -3,5 +3,69 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<h1>Hello world!!!</h1>
+<div class="container subscription" style="margin-top: 120px;">
+    <form class="text-center" method="post">
+    {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="thumbnail text-center">
+              <img src="{% static 'shows/images/hamilton.jpg' %}">
+              <div class="caption">
+                {% bootstrap_field form.hamilton %}
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="thumbnail text-center">
+              <img src="{% static 'shows/images/wicked.jpg' %}">
+              <div class="caption">
+                {% bootstrap_field form.wicked %}
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="thumbnail text-center">
+              <img src="{% static 'shows/images/lion_king.jpg' %}">
+              <div class="caption">
+                {% bootstrap_field form.lion_king %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="thumbnail text-center">
+              <img src="{% static 'shows/images/aladdin.jpg' %}">
+              <div class="caption">
+                {% bootstrap_field form.aladdin %}
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="thumbnail text-center">
+              <img src="{% static 'shows/images/on_your_feet.jpg' %}">
+              <div class="caption">
+                {% bootstrap_field form.on_your_feet %}
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="thumbnail text-center">
+              <img src="{% static 'shows/images/cats.jpg' %}">
+              <div class="caption">
+                {% bootstrap_field form.cats %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-white-fill">Update Subscriptions</button>
+        <button type="submit" class="btn btn-white-fill">Unsubscribe from all</button>
+    </form>
+
+</div>
 {% endblock %}
