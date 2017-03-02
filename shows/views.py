@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView
-from .forms import UserForm
+from .forms import UserForm, SubscriptionForm
 from .models import User
 
 
@@ -13,3 +13,4 @@ class LandingPageView(CreateView):
 
 class SubscriptionsView(FormView):
     template_name = 'shows/subscriptions.html'
+    form_class = SubscriptionForm

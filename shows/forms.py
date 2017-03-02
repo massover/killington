@@ -40,3 +40,6 @@ class UserForm(forms.ModelForm):
         self.instance.last_name = self.cleaned_data['full_name'].split()[1]
         return super(UserForm, self).save(commit=commit)
 
+
+class SubscriptionForm(forms.Form):
+    pass
