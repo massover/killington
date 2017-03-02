@@ -1,6 +1,5 @@
-from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 from .forms import UserForm
 from .models import User
 
@@ -9,8 +8,8 @@ class LandingPageView(CreateView):
     template_name = 'shows/landing_page.html'
     model = User
     form_class = UserForm
-    success_url = reverse_lazy('subscribe')
+    success_url = reverse_lazy('subscriptions')
 
 
-def subscribe(request):
-    return HttpResponse()
+class SubscriptionsView(FormView):
+    template_name = 'shows/subscriptions.html'
