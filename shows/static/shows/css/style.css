@@ -186,6 +186,10 @@ a:hover,a:focus,.a:active {
   color: #ffffff !important;
 }
 
+.btn-hover-text-green:hover {
+  background-color: #01bf86 !important;
+}
+
 .btn-white-bordered {
   padding: 8px 24px !important;
   background-color: transparent !important;
@@ -326,6 +330,7 @@ a:hover,a:focus,.a:active {
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  margin-bottom: 120px;
 }
 
 .navbar-custom .navbar-nav li a {

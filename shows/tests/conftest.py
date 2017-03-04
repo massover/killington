@@ -13,6 +13,7 @@ from ..factories import (LotteryFactory, ShowFactory, PerformanceFactory,
                          UserFactory)
 
 register(UserFactory)
+register(UserFactory, 'new_user')
 register(ShowFactory)
 register(PerformanceFactory)
 register(LotteryFactory, 'enterable_lottery',
@@ -20,9 +21,9 @@ register(LotteryFactory, 'enterable_lottery',
          ends_at=timezone.now() + timedelta(minutes=30))
 
 
-@pytest.fixture
-def show__subscribed_users(user):
-    return [user]
+@pytest.fixture()
+def user__subscribed_shows(show):
+    yield [show]
 
 
 @pytest.fixture

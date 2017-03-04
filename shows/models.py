@@ -1,20 +1,30 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.templatetags.static import static
 from django.utils import timezone
 from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
+from django_extensions.db.fields import AutoSlugField
 
 from .managers import EnterableLotteryManager
 
 
 class Show(models.Model):
     name = models.CharField(max_length=31)
-    subscribed_users = models.ManyToManyField('User', blank=True)
+    slug = AutoSlugField(populate_from='name')
+    subscribed_users = models.ManyToManyField('User',
+                                              related_name='subscribed_shows',
+                                              blank=True)
     url = models.URLField()
+
+    @property
+    def img(self):
+        return static('shows/images/{}.jpg'.format(self.slug))
 
     def __str__(self):
         return '%s' % self.name
