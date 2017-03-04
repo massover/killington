@@ -37,7 +37,7 @@
         <div class="container sticky-navbar-clearfix" style="margin-top: 60px"></div>
 
         {% for message in messages %}
-        <div class="{{ message|bootstrap_message_classes }} alert-dismissable">
+        <div class="{{ message|bootstrap_message_classes }} alert-dismissable" style="margin-top: 40px">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
             {{ message }}
         </div>
