@@ -4,9 +4,10 @@ from django.contrib import messages
 from django.views.generic import CreateView, FormView
 from .forms import UserForm, UserSubscriptionForm
 from .models import User
+from .mixins import AnonymousRequiredMixin
 
 
-class LandingPageView(CreateView):
+class LandingPageView(AnonymousRequiredMixin, CreateView):
     template_name = 'shows/landing_page.html'
     model = User
     form_class = UserForm

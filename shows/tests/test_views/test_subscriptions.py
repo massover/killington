@@ -5,11 +5,10 @@ import pytest
 
 def test_login_is_required(client):
     response = client.get(reverse('subscriptions'), follow=True)
-    _, status_code = response.redirect_chain[0]
-    assert status_code == 302
+    assert response.status_code == 200
 
-    url, status_code = response.redirect_chain[-1]
-
+    assert len(response.redirect_chain) == 1
+    url, status_code = response.redirect_chain[0]
     login_url = settings.LOGIN_URL + '?next={}'.format(reverse('subscriptions'))
     assert url == login_url
 
