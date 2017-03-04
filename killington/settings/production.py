@@ -42,3 +42,7 @@ RAVEN_CONFIG = {
     # release based on the git info.
     'release': release or '2',
 }
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

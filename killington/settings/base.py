@@ -117,10 +117,6 @@ STATICFILES_FINDERS = (
 
 AUTH_USER_MODEL = 'shows.User'
 
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 # http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html#django-celery-results-using-the-django-orm-cache-as-a-result-backend
 CELERY_RESULT_BACKEND = 'django-db'
 

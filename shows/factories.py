@@ -15,6 +15,17 @@ class UserFactory(factory.DjangoModelFactory):
     is_superuser = factory.Faker('pybool')
     is_staff = factory.Faker('pybool')
     password = factory.PostGenerationMethodCall('set_password', 'password')
+    subscribed_shows = factory.RelatedFactory('shows.factories.ShowFactory')
+
+    @factory.post_generation
+    def subscribed_shows(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for subscribed_show in extracted:
+                self.subscribed_shows.add(subscribed_show)
+
 
     class Meta:
         model = User
@@ -23,19 +34,9 @@ class UserFactory(factory.DjangoModelFactory):
 class ShowFactory(factory.DjangoModelFactory):
     name = factory.Faker('word')
     url = factory.Faker('url')
-    subscribed_users = factory.RelatedFactory(UserFactory)
 
     class Meta:
         model = Show
-
-    @factory.post_generation
-    def subscribed_users(self, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if extracted:
-            for subscribed_user in extracted:
-                self.subscribed_users.add(subscribed_user)
 
 
 @factory.django.mute_signals(signals.post_save)
