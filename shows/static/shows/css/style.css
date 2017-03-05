@@ -51,6 +51,22 @@ body {
     margin-bottom: 20px;
 }
 
+.sticky-navbar-clearfix {
+    margin-top: 60px;
+}
+
+@media (max-width: 767px) {
+    .home-wrapper {
+        padding-top: 120px !important;
+
+    }
+
+    .home-wrapper h1, h4 {
+        width: 100% !important;
+
+    }
+}
+
 ::selection{
   background: rgba(249, 230, 5, 0.5);
   color: #496174;
