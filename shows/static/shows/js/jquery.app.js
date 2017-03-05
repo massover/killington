@@ -40,7 +40,6 @@
         });
 
         this.$goToRegister.on('click', function(event){
-            var $anchor = $(event.target);
             $('html, body').stop().animate({
                 scrollTop: $('#register').offset().top - 0
             }, 1500, 'easeInOutExpo');
