@@ -9,10 +9,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
-            <a class="navbar-brand logo" href="/">
+            {% if user.is_authenticated %}
+            <a class="navbar-brand logo" href="{% url 'subscriptions' %}">
                 NYC Broadway Club
             </a>
+            {% else %}
+            <a class="navbar-brand logo" href="{% url 'landing-page' %}">
+                NYC Broadway Club
+            </a>
+            {% endif %}
 
         </div>
 
@@ -31,10 +36,11 @@
             {% else %}
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="">Login</a>
+                    <a href="{% url 'login' %}">Login</a>
                 </li>
                 <li>
-                    <a type="button" class="btn btn-white-fill navbar-btn-alt go-to-register">
+                    <a type="button" class="btn btn-white-fill navbar-btn-alt go-to-register"
+                        href="{% url 'landing-page' %}#register">
                         Sign Up
                     </a>
                 </li>

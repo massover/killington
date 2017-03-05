@@ -1,4 +1,5 @@
 from django.contrib.admin.helpers import ActionForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.forms import fields
 from django import forms
 from django.utils.encoding import force_text
@@ -95,3 +96,9 @@ class UserSubscriptionForm(forms.Form):
         label='',
         required=False,
     )
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs['class'] = 'login-form'

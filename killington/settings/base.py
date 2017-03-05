@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.urls import reverse_lazy
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
@@ -128,3 +130,7 @@ CELERY_TASK_TIME_LIMIT = 60
 # This is a fix that kills the worker which ran your spider and replace it with a fresh one,
 # which prevents the reactor from being started and stopped more than once.
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 1
+
+
+LOGIN_REDIRECT_URL = reverse_lazy('subscriptions')
+LOGIN_URL = reverse_lazy('login')

@@ -5,8 +5,7 @@ import pytest
 
 def test_login_is_required(client):
     response = client.get(reverse('subscriptions'), follow=True)
-    # This is broken for now
-    assert response.status_code == 404
+    assert response.status_code == 200
 
     assert len(response.redirect_chain) == 1
     url, status_code = response.redirect_chain[0]

@@ -40,4 +40,3 @@ class SubscriptionsView(LoginRequiredMixin, FormView):
 
         messages.success(self.request, 'Successfully updated subscriptions')
         return super(SubscriptionsView, self).form_valid(form)
-
