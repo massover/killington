@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -12,6 +13,11 @@ class LandingPageView(AnonymousRequiredMixin, CreateView):
     model = User
     form_class = UserForm
     success_url = reverse_lazy('subscriptions')
+
+    def form_valid(self, form):
+        response = super(LandingPageView, self).form_valid(form)
+        auth.login(self.request, self.object)
+        return response
 
 
 class SubscriptionsView(LoginRequiredMixin, FormView):

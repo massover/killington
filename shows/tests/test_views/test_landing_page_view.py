@@ -31,7 +31,13 @@ def test_post(client):
         'password': fake.password(),
         'date_of_birth': fake.date()
     }
-    response = client.post(reverse('landing-page'), data=data)
+    response = client.post(reverse('landing-page'), data=data, follow=True)
+    assert response.status_code == 200
 
-    assert response.status_code == 302
+    assert len(response.redirect_chain) == 1
+    url, status_code = response.redirect_chain[0]
+    assert url == reverse('subscriptions')
+    assert status_code == 302
+
     assert User.objects.count() == 1
+    assert client.session['_auth_user_id'] == str(User.objects.first().id)
