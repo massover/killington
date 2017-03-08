@@ -15,7 +15,7 @@ def test_login_is_required(client):
 
 @pytest.mark.django_db
 def test_unsubscribe_from_all(client, user):
-    client.login(username=user.username, password='password')
+    client.login(email=user.email, password='password')
     data = {'button': 'unsubscribe-from-all'}
     response = client.post(
         reverse('subscriptions'),
@@ -28,7 +28,7 @@ def test_unsubscribe_from_all(client, user):
 
 @pytest.mark.django_db
 def test_unsubscribe_from_show(client, user):
-    client.login(username=user.username, password='password')
+    client.login(email=user.email, password='password')
     data = {'button': 'update-subscriptions',
             'subscribed_shows': []}
     response = client.post(
@@ -42,7 +42,7 @@ def test_unsubscribe_from_show(client, user):
 
 @pytest.mark.django_db
 def test_subscribe_to_show(client, new_user, show):
-    client.login(username=new_user.username, password='password')
+    client.login(email=new_user.email, password='password')
     data = {
         'button': 'update-subscriptions',
         'subscribed_shows': [str(show.id)],

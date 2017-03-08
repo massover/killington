@@ -1,7 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 import pytest
 
-from ...models import User
 from ..utils import fake
 
 
@@ -12,7 +12,7 @@ def test_get(client):
 
 @pytest.mark.django_db
 def test_anonymous_user_required(client, user):
-    client.login(username=user.username, password='password')
+    client.login(email=user.email, password='password')
     response = client.get(reverse('landing-page'), follow=True)
     assert response.status_code == 200
 
@@ -39,5 +39,6 @@ def test_post(client):
     assert url == reverse('subscriptions')
     assert status_code == 302
 
+    User = get_user_model()
     assert User.objects.count() == 1
     assert client.session['_auth_user_id'] == str(User.objects.first().id)

@@ -4,7 +4,7 @@ from django.urls import reverse
 
 @pytest.mark.django_db
 def test_it_redirects_logged_in_users(client, user):
-    client.login(username=user.username, password='password')
+    client.login(email=user.email, password='password')
     response = client.get(reverse('login'), follow=True)
     assert response.status_code == 200
 
@@ -23,7 +23,7 @@ def test_it(client):
 @pytest.mark.django_db
 def test_it_logs_users_in(client, user):
     data = {
-        'username': user.username,
+        'username': user.email,
         'password': 'password'
     }
     response = client.post(reverse('login'), data=data, follow=True)

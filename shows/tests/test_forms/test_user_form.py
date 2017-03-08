@@ -1,8 +1,8 @@
 import pytest
 from django import forms
+from django.contrib.auth import get_user_model
 
 from ...forms import UserForm
-from ...models import User
 from ..utils import fake
 
 
@@ -39,6 +39,7 @@ def test_save():
     assert form.is_valid(), form.errors
 
     form.save()
+    User = get_user_model()
     assert User.objects.count() == 1
 
     user = User.objects.first()

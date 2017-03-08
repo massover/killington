@@ -1,16 +1,16 @@
 from django.contrib import auth
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView, FormView
 from .forms import UserForm, UserSubscriptionForm
-from .models import User
 from .mixins import AnonymousRequiredMixin
 
 
 class LandingPageView(AnonymousRequiredMixin, CreateView):
     template_name = 'shows/landing_page.html'
-    model = User
+    model = get_user_model()
     form_class = UserForm
     success_url = reverse_lazy('subscriptions')
 
@@ -23,7 +23,7 @@ class LandingPageView(AnonymousRequiredMixin, CreateView):
 class SubscriptionsView(LoginRequiredMixin, FormView):
     template_name = 'shows/subscriptions.html'
     form_class = UserSubscriptionForm
-    model = User
+    model = get_user_model()
     success_url = reverse_lazy('subscriptions')
 
     def get_initial(self):
