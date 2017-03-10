@@ -1,3 +1,6 @@
+import logging
+import datetime
+
 from django.conf import settings
 
 from time import sleep
@@ -5,6 +8,16 @@ import requests
 
 CAPTCHA_IN_URL = 'http://2captcha.com/in.php'
 CAPTCHA_RESULT_URL = 'http://2captcha.com/res.php'
+
+logger = logging.getLogger(__name__)
+
+
+def log_response(response):
+    message = ('response.url: %s\n'
+               'response.status_code: %s\n'
+               'response.text: %s')
+    logger.info(message, response.url, response.status_code, response.text)
+
 
 def get_captcha_id(lottery):
     GOOGLE_CAPTCHA_SITE_KEY = '6LeIhQ4TAAAAACUkR1rzWeVk63ko-sACUlB7i932'
@@ -15,6 +28,7 @@ def get_captcha_id(lottery):
         'pageurl': lottery.url,
     }
     response = requests.post(CAPTCHA_IN_URL, params=params)
+    log_response(response)
     return response.text.split('|')[1]
 
 
@@ -24,11 +38,18 @@ def get_g_recaptcha_response(captcha_id):
         'action': 'get',
         'id': captcha_id,
     }
-    response = requests.get(CAPTCHA_RESULT_URL, params=params)
-    while 'CAPCHA_NOT_READY' in response.text:
-        sleep(5)
+    start_time = datetime.datetime.now()
+    while True:
         response = requests.get(CAPTCHA_RESULT_URL, params=params)
-    return response.text.split('|')[1]
+        log_response(response)
+        if 'CAPCHA_NOT_READY' in response.text:
+            return response.text.split('|')[1]
+
+        time_elapsed = datetime.datetime.now() - start_time
+        if time_elapsed.seconds > 90:
+            raise TimeoutError('Timeout on google recaptcha response')
+
+        sleep(5)
 
 
 def enter_lottery(g_recaptcha_response, lottery, user):
@@ -51,3 +72,6 @@ def enter_lottery(g_recaptcha_response, lottery, user):
     }
     headers = {'referer': lottery.url}
     response = requests.post(lottery.url, data=data, headers=headers)
+    log_response(response)
+
+    assert 'Your lottery entry has been received!' in response.text

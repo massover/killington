@@ -9,4 +9,4 @@ class AnonymousRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(reverse('subscriptions'))
-        return super(AnonymousRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)

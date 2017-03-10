@@ -9,7 +9,7 @@ class ShowsSpider(scrapy.Spider):
     name = "shows"
 
     def __init__(self, *args, **kwargs):
-        super(ShowsSpider, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if kwargs.get('start_urls'):
             self.start_urls = kwargs['start_urls']
         else:
