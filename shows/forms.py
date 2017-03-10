@@ -42,8 +42,11 @@ class UserForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.first_name = self.cleaned_data['full_name'].split()[0]
         self.instance.last_name = self.cleaned_data['full_name'].split()[1]
-        return super(UserForm, self).save(commit=commit)
-
+        password = self.cleaned_data.pop('password')
+        user = super(UserForm, self).save(commit=commit)
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class ThumbnailCheckboxWidget(forms.SelectMultiple):

@@ -1,4 +1,6 @@
 from django.contrib import admin, messages
+from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import ugettext_lazy as _
 
 from .models import (
     Show,
@@ -11,9 +13,24 @@ from . import tasks
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
     list_display = ('email', 'first_name', 'last_name', 'date_of_birth',
-                    'zipcode',)
+                    'zipcode', 'is_staff',)
+    search_fields = ('first_name', 'last_name', 'email')
+    ordering = ('email',)
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2'),
+        }),
+    )
 
 
 @admin.register(Show)
