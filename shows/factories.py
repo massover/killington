@@ -6,7 +6,7 @@ from .models import Lottery, Performance, Show, User
 
 
 class UserFactory(factory.DjangoModelFactory):
-    date_of_birth = factory.Faker('date')
+    date_of_birth = factory.Faker('date_object')
     zipcode = factory.Faker('zipcode')
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')

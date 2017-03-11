@@ -88,6 +88,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CAPTCHA_TIMEOUT = 90
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

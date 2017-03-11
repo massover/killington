@@ -42,11 +42,11 @@ def get_g_recaptcha_response(captcha_id):
     while True:
         response = requests.get(CAPTCHA_RESULT_URL, params=params)
         log_response(response)
-        if 'CAPCHA_NOT_READY' in response.text:
+        if 'OK' in response.text:
             return response.text.split('|')[1]
 
         time_elapsed = datetime.datetime.now() - start_time
-        if time_elapsed.seconds > 90:
+        if time_elapsed.seconds > settings.CAPTCHA_TIMEOUT:
             raise TimeoutError('Timeout on google recaptcha response')
 
         sleep(5)
@@ -74,4 +74,7 @@ def enter_lottery(g_recaptcha_response, lottery, user):
     response = requests.post(lottery.url, data=data, headers=headers)
     log_response(response)
 
-    assert 'Your lottery entry has been received!' in response.text
+    if 'Your lottery entry has been received!' not in response.text:
+        message = ('Lottery entry failed for user.id: {} '.format(user.id) +
+                   'lottery.id: {}'.format(lottery.id))
+        raise RuntimeError(message)

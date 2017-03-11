@@ -77,8 +77,8 @@ def test_it_gets_existing_performances_and_updates_existing_lotteries(show):
     future = timezone.now() + timedelta(days=10)
     show_item = ShowItem({
         'url': show.url,
-        'lottery_ends_at': future.strftime('%d/%m/%y at %I:%M %p'),
-        'performance_starts_at': past.strftime('%d/%m/%y at %I:%M %p'),
+        'lottery_ends_at': future.strftime('%m/%d/%y at %I:%M %p'),
+        'performance_starts_at': past.strftime('%m/%d/%y at %I:%M %p'),
         'lottery_nonce': '72b5b8d688',
         'lottery_external_performance_id': '209064',
     })
