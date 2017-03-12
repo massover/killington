@@ -17,7 +17,7 @@ class EnterUserInLotteryForm(ActionForm):
 
 
 class UserForm(forms.ModelForm):
-    full_name = fields.CharField(required=True)
+    full_name = fields.CharField(required=True, label="First Name and Last Name")
 
     class Meta:
         model = User
