@@ -31,3 +31,5 @@ RAVEN_CONFIG = {
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 ACME_CHALLENGE_CONTENT = os.environ['ACME_CHALLENGE_CONTENT']
+
+SECURE_SSL_REDIRECT = True
