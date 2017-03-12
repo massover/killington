@@ -51,6 +51,8 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 with open('.2captcha', 'r') as fp:
     CAPTCHA_API_KEY = fp.read()
 
+ACME_CHALLENGE_CONTENT = 'acme-challenge-content'
+
 # INSTALLED_APPS += [
 #     'raven.contrib.django.raven_compat',
 # ]

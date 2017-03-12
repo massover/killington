@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView, FormView
@@ -40,3 +42,7 @@ class SubscriptionsView(LoginRequiredMixin, FormView):
 
         messages.success(self.request, 'Successfully updated subscriptions')
         return super().form_valid(form)
+
+
+def acme_challenge(request):
+    return HttpResponse(settings.ACME_CHALLENGE_CONTENT)

@@ -16,3 +16,4 @@ DATABASES = {
 
 CELERY_TASK_ALWAYS_EAGER = True
 CAPTCHA_API_KEY = 'Not used in testing'
+ACME_CHALLENGE_CONTENT = 'acme-challenge-content'

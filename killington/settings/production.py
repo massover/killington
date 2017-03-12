@@ -29,3 +29,5 @@ RAVEN_CONFIG = {
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+ACME_CHALLENGE_CONTENT = os.environ['ACME_CHALLENGE_CONTENT']
