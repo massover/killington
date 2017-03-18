@@ -65,6 +65,7 @@ class LotteryAdmin(admin.ModelAdmin):
     list_display = ('id', 'get_show_name', 'state', 'starts_at', 'ends_at',
                     'get_performance_starts_at',
                     'external_performance_id', 'nonce', 'get_entered_users_count',)
+    filter_horizontal = ('entered_users', )
 
     def get_show_name(self, obj):
         return obj.performance.show.name
