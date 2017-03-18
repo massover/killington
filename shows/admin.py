@@ -14,8 +14,8 @@ from . import tasks
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'date_of_birth',
-                    'zipcode', 'is_staff',)
+    list_display = ('id', 'email', 'first_name', 'last_name', 'date_of_birth',
+                    'zipcode', 'is_staff', )
     search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email',)
     fieldsets = (
@@ -35,7 +35,7 @@ class UserAdmin(UserAdmin):
 
 @admin.register(Show)
 class ShowAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    list_display = ('id', 'name',)
     actions = ['run_shows_spider']
     filter_horizontal = ('subscribed_users', )
     readonly_fields = ('slug', )
@@ -55,14 +55,14 @@ class ShowAdmin(admin.ModelAdmin):
 
 @admin.register(Performance)
 class PerformanceAdmin(admin.ModelAdmin):
-    list_display = ('show', 'starts_at', )
+    list_display = ('id', 'show', 'starts_at',)
 
 
 @admin.register(Lottery)
 class LotteryAdmin(admin.ModelAdmin):
     action_form = EnterUserInLotteryForm
     actions = ['enter_user_in_lottery', ]
-    list_display = ('get_show_name', 'state', 'starts_at', 'ends_at',
+    list_display = ('id', 'get_show_name', 'state', 'starts_at', 'ends_at',
                     'get_performance_starts_at',
                     'external_performance_id', 'nonce', 'get_entered_users_count',)
 
