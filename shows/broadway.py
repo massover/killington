@@ -77,4 +77,5 @@ def enter_lottery(g_recaptcha_response, lottery, user):
     if 'Your lottery entry has been received!' not in response.text:
         message = ('Lottery entry failed for user.id: {} '.format(user.id) +
                    'lottery.id: {}'.format(lottery.id))
+        logger.warning(message)
         raise RuntimeError(message)

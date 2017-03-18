@@ -1,3 +1,5 @@
+import logging
+
 from celery import shared_task
 from scrapy.crawler import CrawlerProcess
 
@@ -5,6 +7,7 @@ from .models import Lottery, User
 from .spiders import ShowsSpider
 from . import broadway
 
+logger = logging.getLogger(__name__)
 
 @shared_task()
 def process_enterable_lotteries():
@@ -17,6 +20,11 @@ def process_enterable_lotteries():
 
 @shared_task(max_retries=3)
 def enter_user_in_lottery(user_id, lottery_id):
+    message = 'Entering user.id: {} in lottery.id: {}'.format(
+        user_id,
+        lottery_id
+    )
+    logger.info(message)
     lottery = Lottery.objects.get(id=lottery_id)
     captcha_id = broadway.get_captcha_id(lottery)
     g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)
