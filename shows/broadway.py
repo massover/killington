@@ -74,8 +74,14 @@ def enter_lottery(g_recaptcha_response, lottery, user):
     response = requests.post(lottery.url, data=data, headers=headers)
     log_response(response)
 
-    if 'Your lottery entry has been received!' not in response.text:
+    success_messages = [
+        'Your lottery entry has been received!',
+        'Before we can accept your entry, please check your email and click on the validation link provided.'
+    ]
+
+    if not any(message in response.text for message in success_messages):
         message = ('Lottery entry failed for user.id: {} '.format(user.id) +
                    'lottery.id: {}'.format(lottery.id))
+
         logger.warning(message)
         raise RuntimeError(message)
