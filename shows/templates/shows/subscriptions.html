@@ -8,7 +8,9 @@
     <hr style="border-color: #ddd;">
     <form class="text-center" method="post">
         {% csrf_token %}
+        <div class="row">
         {{ form }}
+        </div>
         <div class="row">
             <div class="col-sm-6 text-center" style="padding-bottom: 10px;">
                 <button type="submit" class="btn btn-white-fill btn-block btn-hover-text-green"

@@ -76,7 +76,7 @@ class ThumbnailCheckboxWidget(forms.SelectMultiple):
             checked = ''
 
         html = (
-             '<div class="col-sm-4">\n'
+             '<div class="col-md-3">\n'
              '  <div class="thumbnail text-center">\n'
              '    <img src="{img}">\n'
              '    <div class="caption">\n'
