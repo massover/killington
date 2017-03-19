@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.admin.helpers import ActionForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import fields
@@ -5,6 +7,8 @@ from django import forms
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+
+from dateutil.relativedelta import relativedelta
 
 from .models import User, Show
 
@@ -34,10 +38,20 @@ class UserForm(forms.ModelForm):
         self.fields['date_of_birth'].widget.attrs['onfocus'] = '(this.type=\'date\')'
 
     def clean_full_name(self):
-        if len(self.cleaned_data.get('full_name').split()) == 2:
-            return self.cleaned_data.get('full_name')
+        if len(self.cleaned_data.get('full_name').split()) != 2:
+            raise forms.ValidationError('First name and last name required')
 
-        raise forms.ValidationError('First name and last name required')
+        return self.cleaned_data.get('full_name')
+
+
+    def clean_date_of_birth(self):
+        now = datetime.now()
+        date_of_birth = self.cleaned_data.get('date_of_birth')
+        if relativedelta(now, date_of_birth).years < 18:
+            raise forms.ValidationError('You must be 18 or older to sign up')
+
+        return date_of_birth
+
 
     def save(self, commit=True):
         self.instance.first_name = self.cleaned_data['full_name'].split()[0]

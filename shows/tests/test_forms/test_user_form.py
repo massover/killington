@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from django import forms
 from django.contrib.auth import get_user_model
@@ -12,6 +14,11 @@ def test_clean_full_name():
     with pytest.raises(forms.ValidationError):
         form.clean_full_name()
 
+def test_clean_date_of_birth():
+    form = UserForm()
+    form.cleaned_data = {'date_of_birth': datetime.now().date()}
+    with pytest.raises(forms.ValidationError):
+        form.clean_date_of_birth()
 
 def test_it_updates_css_class():
     form = UserForm()
@@ -33,7 +40,7 @@ def test_save():
         'email': fake.email(),
         'zipcode': fake.zipcode(),
         'password': fake.password(),
-        'date_of_birth': fake.date()
+        'date_of_birth': '1989-01-01',
     }
     form = UserForm(data=data)
     assert form.is_valid(), form.errors

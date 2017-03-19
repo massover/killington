@@ -29,7 +29,7 @@ def test_post(client):
         'email': fake.email(),
         'zipcode': fake.zipcode(),
         'password': fake.password(),
-        'date_of_birth': fake.date()
+        'date_of_birth': '1989-01-01',
     }
     response = client.post(reverse('landing-page'), data=data, follow=True)
     assert response.status_code == 200
