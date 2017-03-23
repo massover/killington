@@ -1,0 +1,26 @@
+{% extends 'shows/base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container subscription text-center" style="margin-top: 60px;">
+    <h3 style="padding-top: 3em;" class="text-center">Hi {{user.first_name}} {{user.last_name}}, it's great to meet you.</h3>
+
+        <p style="padding-top: 2em;">
+            Before we get started, we would like to make sure we got your email address right.<br>
+            Please check your email for a confirmation link.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-offset-3 col-md-6">
+                <button type="submit" class="btn btn-white-fill btn-block btn-hover-text-green"
+                        style="margin-top: 2em;">
+                        Send another confirmation email
+                </button>
+            </div>
+        </form>
+
+
+</div>
+{% endblock %}

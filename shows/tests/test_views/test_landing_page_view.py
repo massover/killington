@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.core import mail
 import pytest
 
 from ..utils import fake
@@ -35,10 +36,13 @@ def test_post(client):
     assert response.status_code == 200
 
     assert len(response.redirect_chain) == 1
+
     url, status_code = response.redirect_chain[0]
-    assert url == reverse('subscriptions')
+    assert url == reverse('email-confirmation')
     assert status_code == 302
 
     User = get_user_model()
     assert User.objects.count() == 1
     assert client.session['_auth_user_id'] == str(User.objects.first().id)
+
+    assert len(mail.outbox) == 1

@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 
 from .managers import EnterableLotteryManager, UserManager
+from . import utils
 
 
 class Show(models.Model):
@@ -104,7 +105,6 @@ class Lottery(models.Model):
 
 numeric_validator = RegexValidator(r'^[0-9]*$', _('Only numbers allowed.'))
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
@@ -125,6 +125,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     date_of_birth = models.DateField(_('date of birth'))
     zipcode = models.CharField(_('ZIP code'), max_length=5, validators=[numeric_validator])
+
+    is_confirmed = models.BooleanField(default=False)
+    confirmation_code = models.CharField(max_length=32, default=utils.generate_confirmation_code)
 
     objects = UserManager()
 
@@ -151,8 +154,3 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-
-
-
-

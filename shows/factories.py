@@ -3,6 +3,7 @@ import pytz
 from django.db.models import signals
 
 from .models import Lottery, Performance, Show, User
+from . import utils
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -13,6 +14,9 @@ class UserFactory(factory.DjangoModelFactory):
     email = factory.Faker('email')
     is_superuser = factory.Faker('pybool')
     is_staff = factory.Faker('pybool')
+    is_confirmed = True
+    confirmation_code = factory.LazyFunction(utils.generate_confirmation_code)
+
     password = factory.PostGenerationMethodCall('set_password', 'password')
     subscribed_shows = factory.RelatedFactory('shows.factories.ShowFactory')
 
@@ -64,6 +68,5 @@ class LotteryFactory(factory.DjangoModelFactory):
             return
 
         if extracted:
-            print(extracted)
             for entered_user in extracted:
                 self.entered_users.add(entered_user)

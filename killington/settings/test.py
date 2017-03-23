@@ -17,3 +17,7 @@ DATABASES = {
 CELERY_TASK_ALWAYS_EAGER = True
 CAPTCHA_API_KEY = 'Not used in testing'
 ACME_CHALLENGE_CONTENT = 'acme-challenge-content'
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)

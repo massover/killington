@@ -8,6 +8,12 @@ from .forms import LoginForm
 urlpatterns = [
     url(r'^$', views.LandingPageView.as_view(), name='landing-page'),
     url(r'^subscriptions/$', views.SubscriptionsView.as_view(), name='subscriptions'),
+    url(r'^email-confirmation/$',
+        views.EmailConfirmationView.as_view(),
+        name='email-confirmation'),
+    url(r'^email-confirmation-code-validation/(?P<confirmation_code>\w+)/',
+        views.email_confirmation_code_validation,
+        name='email-confirmation-code-validation',),
     url(r'^logout/$', logout,
         {'next_page': reverse_lazy('landing-page')},
         name='logout'),

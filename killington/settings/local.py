@@ -53,6 +53,8 @@ with open('.2captcha', 'r') as fp:
 
 ACME_CHALLENGE_CONTENT = 'acme-challenge-content'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # INSTALLED_APPS += [
 #     'raven.contrib.django.raven_compat',
 # ]
