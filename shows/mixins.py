@@ -29,6 +29,8 @@ class SendConfirmationEmailMixin(object):
         to = [self.request.user.email]
         msg = EmailMultiAlternatives(subject, text_content, from_email, to)
 
-        html_content = '<p><a href="{}">Click here<a> to confirm your email</p>'.format(link)
-        msg.attach_alternative(html_content, "text/html")
+        content = ('<p>Hey {}, you are almost ready to start using nycbroadwayclub.<br>'.format(self.request.user.first_name) +
+                   '  <a href="{}">Click here<a> to verify your email.'.format(link) +
+                   '</p>')
+        msg.attach_alternative(content, "text/html")
         msg.send()
