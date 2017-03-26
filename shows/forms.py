@@ -35,8 +35,8 @@ class UserForm(forms.ModelForm):
         for field_name in self.fields:
             self.fields[field_name].widget.attrs['class'] = 'input-subscribe'
 
+        self.fields['date_of_birth'].widget.attrs['ontouchstart'] = '(this.type=\'date\')'
         self.fields['date_of_birth'].widget.attrs['onclick'] = '(this.type=\'date\')'
-        self.fields['date_of_birth'].widget.attrs['touchstart'] = '(this.type=\'date\')'
 
     def clean_full_name(self):
         if len(self.cleaned_data.get('full_name').split()) != 2:
