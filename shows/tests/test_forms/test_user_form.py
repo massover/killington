@@ -27,10 +27,16 @@ def test_it_updates_css_class():
         assert field.widget.attrs['class'] == 'input-subscribe'
 
 
-def test_it_updates_date_of_birth_on_focus():
+def test_it_updates_date_of_birth_onclick():
     form = UserForm()
     field = form.fields['date_of_birth']
-    assert field.widget.attrs['onfocus'] == '(this.type=\'date\')'
+    assert field.widget.attrs['onclick'] == '(this.type=\'date\')'
+
+
+def test_it_updates_date_of_birth_touchstart():
+    form = UserForm()
+    field = form.fields['date_of_birth']
+    assert field.widget.attrs['touchstart'] == '(this.type=\'date\')'
 
 
 @pytest.mark.django_db

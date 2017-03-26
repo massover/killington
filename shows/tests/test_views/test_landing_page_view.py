@@ -35,7 +35,7 @@ def test_post(client):
     response = client.post(reverse('landing-page'), data=data, follow=True)
     assert response.status_code == 200
 
-    assert len(response.redirect_chain) == 1
+    assert len(response.redirect_chain) == 1, data
 
     url, status_code = response.redirect_chain[0]
     assert url == reverse('email-confirmation')
