@@ -43,3 +43,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(email, password, **extra_fields)
+
+    def get_by_natural_key(self, username):
+        username_field_iexact = '{}__iexact'.format(self.model.USERNAME_FIELD)
+        return self.get(**{username_field_iexact: username})
