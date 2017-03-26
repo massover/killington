@@ -36,7 +36,7 @@ def test_it_updates_date_of_birth_onclick():
 def test_it_updates_date_of_birth_touchstart():
     form = UserForm()
     field = form.fields['date_of_birth']
-    assert field.widget.attrs['touchstart'] == '(this.type=\'date\')'
+    assert field.widget.attrs['ontouchstart'] == '(this.type=\'date\')'
 
 
 @pytest.mark.django_db
