@@ -7,9 +7,15 @@ from .models import (
     Performance,
     Lottery,
     User,
+    SES,
 )
 from .forms import EnterUserInLotteryForm
 from . import tasks
+
+
+@admin.register(SES)
+class SESAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'user')
 
 
 @admin.register(User)
@@ -18,6 +24,7 @@ class UserAdmin(UserAdmin):
                     'zipcode', 'is_staff', )
     search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email',)
+    actions = ['bulk_create_ses_emails', ]
     fieldsets = (
         (None, {'fields': ('email', 'password', 'date_of_birth', 'zipcode', )}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
@@ -31,6 +38,13 @@ class UserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
+
+    def bulk_create_ses_emails(self, request, queryset):
+        for user in queryset:
+            SES.objects.bulk_create_with_random_emails_for_user(user)
+
+        message = 'Sucessfully generated emails for users'
+        messages.success(request, message)
 
 
 @admin.register(Show)

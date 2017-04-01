@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
@@ -11,7 +12,7 @@ from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 
-from .managers import EnterableLotteryManager, UserManager
+from .managers import EnterableLotteryManager, UserManager, SESManager
 from . import utils
 
 
@@ -105,6 +106,7 @@ class Lottery(models.Model):
 
 numeric_validator = RegexValidator(r'^[0-9]*$', _('Only numbers allowed.'))
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
@@ -154,3 +156,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class SES(models.Model):
+    EMAIL_LENGTH = 32
+
+    objects = SESManager()
+
+    email = models.EmailField(unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='ses_set')
+
+    class Meta:
+        verbose_name = 'SES'
+        verbose_name_plural = 'SES Set'
+
+

@@ -66,3 +66,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #         # release based on the git info.
 #         'release': raven.fetch_git_sha(BASE_DIR),
 #     }
+
+SES_DOMAIN = 'example.com'

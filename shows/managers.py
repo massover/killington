@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.utils import timezone
+from django.utils.crypto import get_random_string
 
 
 class EnterableLotteryManager(models.Manager):
@@ -11,6 +13,19 @@ class EnterableLotteryManager(models.Manager):
             nonce__isnull=False,
             external_performance_id__isnull=False,
         )
+
+
+class SESManager(models.Manager):
+    def bulk_create_with_random_emails_for_user(self, user, num_objects=1000):
+        ses_set = []
+        for _ in range(num_objects):
+            email = '{random_string}@{ses_domain}'.format(
+                random_string=get_random_string(length=self.model.EMAIL_LENGTH),
+                ses_domain=settings.SES_DOMAIN
+            )
+            ses_set.append(self.model(user=user, email=email))
+
+        self.bulk_create(ses_set)
 
 
 class UserManager(BaseUserManager):

@@ -21,3 +21,5 @@ ACME_CHALLENGE_CONTENT = 'acme-challenge-content'
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
+
+SES_DOMAIN = 'example.com'
