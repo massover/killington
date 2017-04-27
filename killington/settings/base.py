@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_extensions',
     'bootstrap3',
+    'rest_framework',
+    'oauth2_provider',
     'shows',
 ]
 
@@ -165,4 +167,10 @@ LOGGING = {
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
 }

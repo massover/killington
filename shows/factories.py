@@ -1,8 +1,9 @@
 import factory
 import pytz
 from django.db.models import signals
+from django.utils.crypto import get_random_string
 
-from .models import Lottery, Performance, Show, User
+from .models import Lottery, Performance, Show, User, SES
 from . import utils
 
 
@@ -29,9 +30,16 @@ class UserFactory(factory.DjangoModelFactory):
             for subscribed_show in extracted:
                 self.subscribed_shows.add(subscribed_show)
 
-
     class Meta:
         model = User
+
+
+class SESFactory(factory.DjangoModelFactory):
+    email = factory.Faker('email')
+    user = factory.SubFactory('shows.factories.UserFactory')
+
+    class Meta:
+        model = SES
 
 
 class ShowFactory(factory.DjangoModelFactory):
