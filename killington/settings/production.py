@@ -1,6 +1,8 @@
 import os
 import sys
 import dj_database_url
+from raven.transport import HTTPTransport
+
 from .base import *
 
 DEBUG = False
@@ -18,13 +20,8 @@ INSTALLED_APPS += [
 ]
 
 release = os.environ.get('SOURCE_VERSION') or os.environ.get('HEROKU_SLUG_COMMIT')
-
-RAVEN_CONFIG = {
-    'dsn': os.environ['SENTRY_DSN'],
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': release or '2',
-}
+RAVEN_CONFIG['dsn'] = os.environ['SENTRY_DSN']
+RAVEN_CONFIG['release'] = release or 'missing-release-from-env',
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

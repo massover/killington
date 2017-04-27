@@ -166,3 +166,13 @@ LOGGING = {
         },
     },
 }
+
+# https://docs.sentry.io/clients/python/transports/#sync
+# https://github.com/getsentry/raven-python/issues/881
+# Sentry does not work using CELERY_WORKER_MAX_TASKS_PER_CHILD = 1 with
+# async. Sync HttpTransport fixes it and works fine, but it's
+# obviously at the cost of being sync.
+from raven.transport import HTTPTransport
+RAVEN_CONFIG = {
+    'transport': HTTPTransport
+}
