@@ -55,16 +55,12 @@ ACME_CHALLENGE_CONTENT = 'acme-challenge-content'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# INSTALLED_APPS += [
-#     'raven.contrib.django.raven_compat',
-# ]
-#
-# with open('.sentrydsn', 'r') as fp:
-#     RAVEN_CONFIG = {
-#         'dsn': fp.read(),
-#         # If you are using git, you can also automatically configure the
-#         # release based on the git info.
-#         'release': raven.fetch_git_sha(BASE_DIR),
-#     }
+INSTALLED_APPS += [
+    'raven.contrib.django.raven_compat',
+]
+
+with open('.sentrydsn', 'r') as fp:
+    RAVEN_CONFIG['dsn'] = fp.read()
+    RAVEN_CONFIG['release'] = raven.fetch_git_sha(BASE_DIR)
 
 SES_DOMAIN = 'example.com'
