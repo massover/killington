@@ -21,7 +21,7 @@ INSTALLED_APPS += [
 
 release = os.environ.get('SOURCE_VERSION') or os.environ.get('HEROKU_SLUG_COMMIT')
 RAVEN_CONFIG['dsn'] = os.environ['SENTRY_DSN']
-RAVEN_CONFIG['release'] = release or 'missing-release-from-env',
+RAVEN_CONFIG['release'] = release or 'missing-release-from-env'
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
