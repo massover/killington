@@ -1,13 +1,12 @@
-import logging
 import datetime
+import logging
+import time
 
+import requests
 from django.conf import settings
 
-from time import sleep
-import requests
-
-CAPTCHA_IN_URL = 'http://2captcha.com/in.php'
-CAPTCHA_RESULT_URL = 'http://2captcha.com/res.php'
+from . import constants
+from .exceptions import NoSlotAvailableError
 
 logger = logging.getLogger(__name__)
 
@@ -20,15 +19,18 @@ def log_response(response):
 
 
 def get_captcha_id(lottery):
-    GOOGLE_CAPTCHA_SITE_KEY = '6LeIhQ4TAAAAACUkR1rzWeVk63ko-sACUlB7i932'
     params = {
         'key': settings.CAPTCHA_API_KEY,
         'method': 'userrecaptcha',
-        'googlekey': GOOGLE_CAPTCHA_SITE_KEY,
+        'googlekey': constants.GOOGLE_CAPTCHA_SITE_KEY,
         'pageurl': lottery.url,
     }
-    response = requests.post(CAPTCHA_IN_URL, params=params)
+    response = requests.post(constants.CAPTCHA_IN_URL, params=params)
     log_response(response)
+    if constants.NO_SLOT_AVAILABLE_RESPONSE in response.text:
+        time.sleep(constants.NO_SLOT_AVAILABLE_RETRY_DELAY)
+        message = 'No recaptcha slot available for lottery.id: {}'.format(lottery.id)
+        raise NoSlotAvailableError(message)
     return response.text.split('|')[1]
 
 
@@ -40,7 +42,7 @@ def get_g_recaptcha_response(captcha_id):
     }
     start_time = datetime.datetime.now()
     while True:
-        response = requests.get(CAPTCHA_RESULT_URL, params=params)
+        response = requests.get(constants.CAPTCHA_RESULT_URL, params=params)
         log_response(response)
         if 'OK' in response.text:
             return response.text.split('|')[1]
@@ -49,7 +51,7 @@ def get_g_recaptcha_response(captcha_id):
         if time_elapsed.seconds > settings.CAPTCHA_TIMEOUT:
             raise TimeoutError('Timeout on google recaptcha response')
 
-        sleep(5)
+        time.sleep(constants.G_RECAPTCHA_RESPONSE_RETRY_DELAY)
 
 
 def enter_lottery(g_recaptcha_response, lottery, user):

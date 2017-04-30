@@ -1,0 +1,2 @@
+class NoSlotAvailableError(Exception):
+    pass
