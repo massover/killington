@@ -1,3 +1,4 @@
+from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 
@@ -10,3 +11,5 @@ class SESViewSet(RetrieveModelMixin, GenericViewSet):
     lookup_field = 'email'
     lookup_value_regex = '(.+)'
     serializer_class = SESSerializer
+    permission_classes = [TokenHasScope, ]
+    required_scopes = ['read', ]

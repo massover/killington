@@ -168,12 +168,18 @@ LOGGING = {
         },
     },
 }
-
+# https://django-oauth-toolkit.readthedocs.io/en/latest/rest-framework/getting_started.html#step-1-minimal-setup
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
-    )
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', }
+}
+
 
 # https://docs.sentry.io/clients/python/transports/#sync
 # https://github.com/getsentry/raven-python/issues/881

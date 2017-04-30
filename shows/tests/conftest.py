@@ -1,5 +1,4 @@
 import os
-from django.db.models import RegisterLookupMixin
 
 from django.utils import timezone
 from django.conf import settings
@@ -37,6 +36,7 @@ def api_client():
         token='1234567890',
         application=application,
         expires=timezone.now() + timedelta(days=1),
+        scope='read',
     )
     api_client = APIClient()
     api_client.credentials(HTTP_AUTHORIZATION='Bearer {}'.format(token))

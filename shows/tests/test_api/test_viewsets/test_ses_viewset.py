@@ -20,7 +20,6 @@ def test_it_requires_authentication():
     user = UserFactory(email='user@example.com')
     ses = SESFactory(user=user)
     response = client.get(reverse('ses-detail', kwargs={'email': ses.email}))
-    print(response.json())
     assert response.status_code == 401
 
 
