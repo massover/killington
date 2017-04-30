@@ -5,7 +5,9 @@ from django.conf import settings
 from datetime import timedelta
 
 import pytest
+from oauth2_provider.models import get_application_model, AccessToken
 from pytest_factoryboy import register
+from rest_framework.test import APIClient
 from scrapy import Request
 from scrapy.http import TextResponse
 
@@ -19,6 +21,26 @@ register(PerformanceFactory)
 register(LotteryFactory, 'enterable_lottery',
          starts_at=timezone.now() - timedelta(minutes=30),
          ends_at=timezone.now() + timedelta(minutes=30))
+
+
+@pytest.fixture()
+def api_client():
+    Application = get_application_model()
+    application = Application.objects.create(
+        name="Test Application",
+        redirect_uris="http://localhost",
+        client_type=Application.CLIENT_CONFIDENTIAL,
+        authorization_grant_type=Application.GRANT_IMPLICIT,
+    )
+    token = AccessToken.objects.create(
+        token='1234567890',
+        application=application,
+        expires=timezone.now() + timedelta(days=1),
+        scope='read',
+    )
+    api_client = APIClient()
+    api_client.credentials(HTTP_AUTHORIZATION='Bearer {}'.format(token))
+    yield api_client
 
 
 @pytest.fixture()

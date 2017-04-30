@@ -19,7 +19,9 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^', include('shows.urls')),
+    url(r'^api/', include('shows.api.urls')),
 ]
 
 if settings.DEBUG:
