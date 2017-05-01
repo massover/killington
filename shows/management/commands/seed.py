@@ -18,6 +18,6 @@ class Command(BaseCommand):
             self.stdout.write('Created 6 Shows')
 
         if 'users' in options['model']:
-            UserFactory(email='admin@example.com', username='admin', is_staff=True, is_superuser=True)
+            UserFactory(email='admin@example.com', is_staff=True, is_superuser=True)
             self.stdout.write('Created 1 User')
 
