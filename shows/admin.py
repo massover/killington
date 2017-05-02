@@ -8,6 +8,7 @@ from .models import (
     Lottery,
     User,
     SES,
+    Flood,
 )
 from .forms import EnterUserInLotteryForm
 from . import tasks
@@ -16,6 +17,12 @@ from . import tasks
 @admin.register(SES)
 class SESAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'user')
+
+
+@admin.register(Flood)
+class FloodAdmin(admin.ModelAdmin):
+    list_display = ('id', 'lottery', 'client', 'manager')
+    raw_id_fields = ('manager', 'client', 'lottery', )
 
 
 @admin.register(User)

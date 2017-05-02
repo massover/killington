@@ -166,8 +166,15 @@ class SES(models.Model):
     email = models.EmailField(unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='ses_set')
 
+
     class Meta:
         verbose_name = 'SES'
         verbose_name_plural = 'SES Set'
 
+
+class Flood(models.Model):
+    lottery = models.ForeignKey(Lottery)
+    client = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='client_floods')
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_floods')
+    entered_ses_set = models.ManyToManyField(SES)
 
