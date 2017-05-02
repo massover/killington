@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
@@ -170,6 +171,7 @@ class SES(models.Model):
     class Meta:
         verbose_name = 'SES'
         verbose_name_plural = 'SES Set'
+        ordering = ('id', )
 
 
 class Flood(models.Model):
@@ -177,4 +179,14 @@ class Flood(models.Model):
     client = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='client_floods')
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_floods')
     entered_ses_set = models.ManyToManyField(SES)
+
+    def generate_users(self):
+        for index, ses in enumerate(self.client.ses_set.all()):
+            yield User(
+                first_name=self.client.first_name,
+                last_name=self.client.last_name,
+                zipcode=self.client.zipcode,
+                email=ses.email,
+                date_of_birth=self.client.date_of_birth + timedelta(days=index),
+            )
 
