@@ -13,7 +13,9 @@ from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 
-from .managers import EnterableLotteryManager, UserManager, SESManager
+from .managers import (EnterableLotteryManager, UserManager, SESManager,
+                       EnterableFloodManager,)
+
 from . import utils
 
 
@@ -175,6 +177,9 @@ class SES(models.Model):
 
 
 class Flood(models.Model):
+    objects = models.Manager()
+    enterable_objects = EnterableFloodManager()
+
     lottery = models.ForeignKey(Lottery)
     client = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='client_floods')
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_floods')
