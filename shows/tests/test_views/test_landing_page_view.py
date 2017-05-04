@@ -26,7 +26,7 @@ def test_anonymous_user_required(client, user):
 @pytest.mark.django_db
 def test_post(client):
     data = {
-        'full_name': fake.name(),
+        'full_name': '{} {}'.format(fake.first_name(), fake.last_name()),
         'email': fake.email(),
         'zipcode': fake.zipcode(),
         'password': fake.password(),
