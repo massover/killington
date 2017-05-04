@@ -19,6 +19,7 @@ class UserFactory(factory.DjangoModelFactory):
 
     password = factory.PostGenerationMethodCall('set_password', 'password')
     subscribed_shows = factory.RelatedFactory('shows.factories.ShowFactory')
+    ses_set = factory.RelatedFactory('shows.factories.SESFactory')
 
     @factory.post_generation
     def subscribed_shows(self, create, extracted, **kwargs):
@@ -28,6 +29,15 @@ class UserFactory(factory.DjangoModelFactory):
         if extracted:
             for subscribed_show in extracted:
                 self.subscribed_shows.add(subscribed_show)
+
+    @factory.post_generation
+    def ses_set(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for ses_set in extracted:
+                self.ses_set.add(ses_set)
 
     class Meta:
         model = User

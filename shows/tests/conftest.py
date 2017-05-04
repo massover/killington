@@ -16,6 +16,7 @@ from ..factories import (LotteryFactory, ShowFactory, PerformanceFactory,
 
 register(UserFactory)
 register(UserFactory, 'new_user')
+register(UserFactory, 'flood_user')
 register(ShowFactory)
 register(PerformanceFactory)
 register(LotteryFactory, 'enterable_lottery',
@@ -48,6 +49,11 @@ def api_client():
 @pytest.fixture()
 def user__subscribed_shows(show):
     yield [show]
+
+
+@pytest.fixture()
+def flood_user__ses_set(ses):
+    yield [ses]
 
 
 @pytest.fixture
