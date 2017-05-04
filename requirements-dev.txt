@@ -1,11 +1,11 @@
 honcho
 piprot
 pudb
+pygraphviz
 pytest
 pytest-django
 pytest-factoryboy
 pytest-pudb
 werkzeug
-
 
 -r requirements.txt
