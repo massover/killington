@@ -6,22 +6,25 @@ from datetime import timedelta
 
 import pytest
 from oauth2_provider.models import get_application_model, AccessToken
-from pytest_factoryboy import register
+from pytest_factoryboy import register, LazyFixture
 from rest_framework.test import APIClient
 from scrapy import Request
 from scrapy.http import TextResponse
 
 from ..factories import (LotteryFactory, ShowFactory, PerformanceFactory,
-                         UserFactory)
+                         UserFactory, FloodFactory, SESFactory)
 
 register(UserFactory)
 register(UserFactory, 'new_user')
+register(UserFactory, 'flood_user')
 register(ShowFactory)
 register(PerformanceFactory)
 register(LotteryFactory, 'enterable_lottery',
          starts_at=timezone.now() - timedelta(minutes=30),
          ends_at=timezone.now() + timedelta(minutes=30))
-
+register(FloodFactory, 'enterable_flood',
+         lottery=LazyFixture('enterable_lottery'))
+register(SESFactory)
 
 @pytest.fixture()
 def api_client():
@@ -46,6 +49,11 @@ def api_client():
 @pytest.fixture()
 def user__subscribed_shows(show):
     yield [show]
+
+
+@pytest.fixture()
+def flood_user__ses_set(ses):
+    yield [ses]
 
 
 @pytest.fixture

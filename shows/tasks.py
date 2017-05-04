@@ -1,13 +1,15 @@
 import logging
 
 from celery import shared_task
+from datetime import timedelta
 from scrapy.crawler import CrawlerProcess
 
-from .models import Lottery, User
+from .models import Lottery, User, Flood, SES
 from .spiders import ShowsSpider
 from . import broadway
 
 logger = logging.getLogger(__name__)
+
 
 @shared_task()
 def process_enterable_lotteries():
@@ -34,6 +36,32 @@ def enter_user_in_lottery(user_id, lottery_id):
     lottery.entered_users.add(user)
 
 
+@shared_task(max_retries=3)
+def enter_user_in_lottery_for_flood(flood_id, ses_id, date_of_birth_offset):
+    flood = Flood.objects.get(id=flood_id)
+    message = 'Flood entry for ses.id: {} in lottery.id: {}'.format(
+        ses_id,
+        flood.lottery.id,
+    )
+    logger.info(message)
+
+    lottery = Lottery.objects.get(id=flood.lottery.id)
+    captcha_id = broadway.get_captcha_id(lottery)
+    g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)
+
+    ses = SES.objects.get(id=ses_id)
+    user = User(
+        first_name=ses.user.first_name,
+        last_name=ses.user.last_name,
+        zipcode=ses.user.zipcode,
+        email=ses.email,
+        date_of_birth=ses.user.date_of_birth + timedelta(days=date_of_birth_offset),
+    )
+    broadway.enter_lottery(g_recaptcha_response, lottery, user)
+
+    flood.entered_ses_set.add(ses)
+
+
 @shared_task
 def run_shows_spider(*args, **kwargs):
     process = CrawlerProcess({
@@ -42,3 +70,15 @@ def run_shows_spider(*args, **kwargs):
     })
     process.crawl(ShowsSpider, *args, **kwargs)
     process.start()
+
+
+@shared_task
+def process_enterable_floods():
+    for flood in Flood.enterable_objects.all():
+        for index, ses in enumerate(flood.client.ses_set.all()):
+            enter_user_in_lottery_for_flood.delay(
+                flood.id,
+                flood.lottery.id,
+                ses.id,
+                index
+            )

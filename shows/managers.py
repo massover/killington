@@ -5,6 +5,17 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string
 
 
+class EnterableFloodManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            lottery__starts_at__lte=timezone.now(),
+            lottery__ends_at__gt=timezone.now(),
+            lottery__nonce__isnull=False,
+            lottery__external_performance_id__isnull=False,
+            entered_ses_set=None,
+        )
+
+
 class EnterableLotteryManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(

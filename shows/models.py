@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
@@ -12,7 +13,9 @@ from django.utils.formats import date_format
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 
-from .managers import EnterableLotteryManager, UserManager, SESManager
+from .managers import (EnterableLotteryManager, UserManager, SESManager,
+                       EnterableFloodManager,)
+
 from . import utils
 
 
@@ -166,8 +169,29 @@ class SES(models.Model):
     email = models.EmailField(unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='ses_set')
 
+
     class Meta:
         verbose_name = 'SES'
         verbose_name_plural = 'SES Set'
+        ordering = ('id', )
 
+
+class Flood(models.Model):
+    objects = models.Manager()
+    enterable_objects = EnterableFloodManager()
+
+    lottery = models.ForeignKey(Lottery)
+    client = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='client_floods')
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_floods')
+    entered_ses_set = models.ManyToManyField(SES)
+
+    def generate_users(self):
+        for index, ses in enumerate(self.client.ses_set.all()):
+            yield User(
+                first_name=self.client.first_name,
+                last_name=self.client.last_name,
+                zipcode=self.client.zipcode,
+                email=ses.email,
+                date_of_birth=self.client.date_of_birth + timedelta(days=index),
+            )
 

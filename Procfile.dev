@@ -1,3 +1,4 @@
 web: PYTHONUNBUFFERED=true python manage.py runserver_plus
-worker: PYTHONUNBUFFERED=true celery -A killington worker -l info
+worker: PYTHONUNBUFFERED=true celery -A killington worker -l info -Q celery
+flood: PYTHONUNBUFFERED=true celery -A killington worker -l info -Q flood
 beat: PYTHONUNBUFFERED=true celery -A killington beat -l info -S django
