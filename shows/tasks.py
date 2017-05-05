@@ -83,7 +83,6 @@ def process_enterable_floods():
         for index, ses in enumerate(flood.client.ses_set.all()):
             enter_user_in_lottery_for_flood.delay(
                 flood.id,
-                flood.lottery.id,
                 ses.id,
                 index
             )
