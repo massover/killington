@@ -37,6 +37,7 @@ class UserForm(forms.ModelForm):
 
         self.fields['date_of_birth'].widget.attrs['ontouchstart'] = '(this.type=\'date\')'
         self.fields['date_of_birth'].widget.attrs['onclick'] = '(this.type=\'date\')'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email'
 
     def clean_full_name(self):
         if len(self.cleaned_data.get('full_name').split()) != 2:

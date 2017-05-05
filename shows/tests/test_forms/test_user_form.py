@@ -39,6 +39,12 @@ def test_it_updates_date_of_birth_touchstart():
     assert field.widget.attrs['ontouchstart'] == '(this.type=\'date\')'
 
 
+def test_it_updates_email_placeholder():
+    form = UserForm()
+    field = form.fields['email']
+    assert field.widget.attrs['placeholder'] == 'Email'
+
+
 @pytest.mark.django_db
 def test_save():
     data = {
