@@ -42,7 +42,7 @@ def test_it_updates_date_of_birth_touchstart():
 @pytest.mark.django_db
 def test_save():
     data = {
-        'full_name': fake.name(),
+        'full_name': '{} {}'.format(fake.first_name(), fake.last_name()),
         'email': fake.email(),
         'zipcode': fake.zipcode(),
         'password': fake.password(),
