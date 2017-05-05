@@ -183,7 +183,7 @@ class Flood(models.Model):
     lottery = models.ForeignKey(Lottery)
     client = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='client_floods')
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_floods')
-    entered_ses_set = models.ManyToManyField(SES)
+    entered_ses_set = models.ManyToManyField(SES, blank=True)
 
     def generate_users(self):
         for index, ses in enumerate(self.client.ses_set.all()):
