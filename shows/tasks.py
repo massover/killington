@@ -2,14 +2,19 @@ import logging
 
 from celery import shared_task
 from datetime import timedelta
+
+from requests import RequestException
 from scrapy.crawler import CrawlerProcess
 
 from .models import Lottery, User, Flood, SES
 from .spiders import ShowsSpider
+from .exceptions import NoSlotAvailableError
 from . import broadway
 
 logger = logging.getLogger(__name__)
 
+AUTORETRY_FOR_EXCEPTIONS = (NoSlotAvailableError, TimeoutError, RuntimeError,
+                            RequestException, )
 
 @shared_task()
 def process_enterable_lotteries():
@@ -20,7 +25,7 @@ def process_enterable_lotteries():
             enter_user_in_lottery.delay(user.id, lottery.id)
 
 
-@shared_task(max_retries=3)
+@shared_task(max_retries=3, autoretry_for=AUTORETRY_FOR_EXCEPTIONS)
 def enter_user_in_lottery(user_id, lottery_id):
     message = 'Entering user.id: {} in lottery.id: {}'.format(
         user_id,
@@ -36,7 +41,7 @@ def enter_user_in_lottery(user_id, lottery_id):
     lottery.entered_users.add(user)
 
 
-@shared_task(max_retries=3)
+@shared_task(max_retries=3, autoretry_for=AUTORETRY_FOR_EXCEPTIONS)
 def enter_user_in_lottery_for_flood(flood_id, ses_id, date_of_birth_offset):
     flood = Flood.objects.get(id=flood_id)
     message = 'Flood entry for ses.id: {} in lottery.id: {}'.format(
