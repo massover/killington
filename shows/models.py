@@ -187,15 +187,5 @@ class Flood(models.Model):
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_floods')
     entered_ses_set = models.ManyToManyField(SES, blank=True)
 
-    def generate_users(self):
-        for index, ses in enumerate(self.client.ses_set.all()):
-            yield User(
-                first_name=self.client.first_name,
-                last_name=self.client.last_name,
-                zipcode=self.client.zipcode,
-                email=ses.email,
-                date_of_birth=self.client.date_of_birth + timedelta(days=index),
-            )
-
     def __str__(self):
         return str(self.id)
