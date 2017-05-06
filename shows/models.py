@@ -169,11 +169,13 @@ class SES(models.Model):
     email = models.EmailField(unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='ses_set')
 
-
     class Meta:
         verbose_name = 'SES'
         verbose_name_plural = 'SES Set'
         ordering = ('id', )
+
+    def __str__(self):
+        return self.email
 
 
 class Flood(models.Model):
@@ -195,3 +197,5 @@ class Flood(models.Model):
                 date_of_birth=self.client.date_of_birth + timedelta(days=index),
             )
 
+    def __str__(self):
+        return str(self.id)
