@@ -31,6 +31,8 @@ def get_captcha_id(lottery):
         time.sleep(constants.NO_SLOT_AVAILABLE_RETRY_DELAY)
         message = 'No recaptcha slot available for lottery.id: {}'.format(lottery.id)
         raise NoSlotAvailableError(message)
+
+    time.sleep(settings.AFTER_CAPTCHA_UPLOAD_REQUEST_DELAY)
     return response.text.split('|')[1]
 
 
@@ -48,7 +50,7 @@ def get_g_recaptcha_response(captcha_id):
             return response.text.split('|')[1]
 
         time_elapsed = datetime.datetime.now() - start_time
-        if time_elapsed.seconds > settings.CAPTCHA_TIMEOUT:
+        if time_elapsed.seconds > settings.G_RECAPTCHA_RESPONSE_TIMEOUT:
             raise TimeoutError('Timeout on google recaptcha response')
 
         time.sleep(constants.G_RECAPTCHA_RESPONSE_RETRY_DELAY)

@@ -1,5 +1,6 @@
 import logging
 
+from billiard.exceptions import TimeLimitExceeded
 from celery import shared_task
 from datetime import timedelta
 
@@ -14,7 +15,7 @@ from . import broadway
 logger = logging.getLogger(__name__)
 
 AUTORETRY_FOR_EXCEPTIONS = (NoSlotAvailableError, TimeoutError, RuntimeError,
-                            RequestException, )
+                            RequestException, TimeLimitExceeded)
 
 @shared_task()
 def process_enterable_lotteries():

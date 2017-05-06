@@ -90,8 +90,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CAPTCHA_TIMEOUT = 90
-
+G_RECAPTCHA_RESPONSE_TIMEOUT = 60
+AFTER_CAPTCHA_UPLOAD_REQUEST_DELAY = 20
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -127,7 +127,7 @@ AUTH_USER_MODEL = 'shows.User'
 CELERY_RESULT_BACKEND = 'django-db'
 
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html?highlight=SOFT_TIME_LIMIT#std:setting-task_time_limit
-CELERY_TASK_TIME_LIMIT = 60
+CELERY_TASK_TIME_LIMIT = 120
 
 # http://stackoverflow.com/questions/22116493/run-a-scrapy-spider-in-a-celery-task
 # Using Scrapy inside celery results in a ReactorNotRestartable exception

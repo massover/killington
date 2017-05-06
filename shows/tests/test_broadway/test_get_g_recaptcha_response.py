@@ -6,8 +6,7 @@ import requests
 
 
 @patch('requests.get')
-def test_it_raises_a_timeout_error(mock_get, settings):
-    settings.CAPTCHA_TIMEOUT = -1
+def test_it_raises_a_timeout_error(mock_get):
     with pytest.raises(TimeoutError):
         broadway.get_g_recaptcha_response('captcha-id')
 
