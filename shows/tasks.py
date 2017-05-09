@@ -33,7 +33,14 @@ def enter_user_in_lottery(user_id, lottery_id):
         lottery_id
     )
     logger.info(message)
-    lottery = Lottery.objects.get(id=lottery_id)
+
+    # If a task took too long to get processed, the lottery may be not
+    # be enterable anymore, so just exit.
+    try:
+        lottery = Lottery.enterable_objects.get(id=lottery_id)
+    except Lottery.DoesNotExist:
+        return
+
     captcha_id = broadway.get_captcha_id(lottery)
     g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)
 
@@ -51,7 +58,13 @@ def enter_user_in_lottery_for_flood(flood_id, ses_id, date_of_birth_offset):
     )
     logger.info(message)
 
-    lottery = Lottery.objects.get(id=flood.lottery.id)
+    # If a task took too long to get processed, the lottery may be not
+    # be enterable anymore, so just exit.
+    try:
+        lottery = Lottery.enterable_objects.get(id=flood.lottery.id)
+    except Lottery.DoesNotExist:
+        return
+
     captcha_id = broadway.get_captcha_id(lottery)
     g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)
 
