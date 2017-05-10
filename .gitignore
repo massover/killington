@@ -5,3 +5,4 @@ celerybeat.pid
 .2captcha
 .sentrydsn
 .cache/
+*.pyc
