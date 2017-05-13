@@ -21,7 +21,7 @@ class SESAdmin(admin.ModelAdmin):
 
 @admin.register(Flood)
 class FloodAdmin(admin.ModelAdmin):
-    list_display = ('id', 'lottery', 'client', 'manager')
+    list_display = ('id', 'lottery', 'client', 'manager', 'success')
     raw_id_fields = ('manager', 'client', 'lottery', )
 
 
