@@ -29,4 +29,3 @@ def test_post_updates_confirmation_code_and_sends_email(client, user):
 def test_login_required(client):
     response = client.get(reverse('email-confirmation'))
     assert response.status_code == 302
-

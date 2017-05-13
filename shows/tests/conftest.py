@@ -26,6 +26,7 @@ register(FloodFactory, 'enterable_flood',
          lottery=LazyFixture('enterable_lottery'))
 register(SESFactory)
 
+
 @pytest.fixture()
 def api_client():
     Application = get_application_model()
@@ -60,7 +61,8 @@ def flood_user__ses_set(ses):
 def active_lottery_list_response():
     url = 'https://lottery.broadwaydirect.com/show/aladdin/'
     request = Request(url=url)
-    path = os.path.join(settings.BASE_DIR, 'shows/tests/html/active_lottery_list.html')
+    path = os.path.join(settings.BASE_DIR,
+                        'shows/tests/html/active_lottery_list.html')
     with open(path) as fp:
         return TextResponse(
             url=url,
@@ -74,7 +76,8 @@ def active_lottery_list_response():
 def active_lottery_form_response():
     url = 'https://lottery.broadwaydirect.com/enter-lottery/?lottery=209064&window=popup'
     request = Request(url=url)
-    path = os.path.join(settings.BASE_DIR, 'shows/tests/html/active_lottery_form.html')
+    path = os.path.join(settings.BASE_DIR,
+                        'shows/tests/html/active_lottery_form.html')
     with open(path) as fp:
         return TextResponse(
             url=url,
@@ -88,7 +91,8 @@ def active_lottery_form_response():
 def pending_lottery_list_response():
     url = 'https://lottery.broadwaydirect.com/show/hamilton/'
     request = Request(url=url)
-    path = os.path.join(settings.BASE_DIR, 'shows/tests/html/pending_lottery_list.html')
+    path = os.path.join(settings.BASE_DIR,
+                        'shows/tests/html/pending_lottery_list.html')
     with open(path) as fp:
         return TextResponse(
             url=url,

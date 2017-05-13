@@ -52,4 +52,3 @@ app.conf.CELERYBEAT_SCHEDULE = {
         'options': {'queue': 'flood'},
     },
 }
-

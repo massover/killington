@@ -22,3 +22,6 @@ serve:
 
 test:
 	py.test -v --durations=25
+
+lint:
+	flake8

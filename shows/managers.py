@@ -31,7 +31,8 @@ class SESManager(models.Manager):
         ses_set = []
         for _ in range(num_objects):
             email = '{random_string}@{ses_domain}'.format(
-                random_string=get_random_string(length=self.model.EMAIL_LENGTH),
+                random_string=get_random_string(
+                    length=self.model.EMAIL_LENGTH),
                 ses_domain=settings.SES_DOMAIN
             )
             ses_set.append(self.model(user=user, email=email))

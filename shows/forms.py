@@ -19,9 +19,9 @@ class EnterUserInLotteryForm(ActionForm):
     email = fields.CharField(required=False)
 
 
-
 class UserForm(forms.ModelForm):
-    full_name = fields.CharField(required=True, label="First name and last name")
+    full_name = fields.CharField(
+        required=True, label="First name and last name")
 
     class Meta:
         model = User
@@ -45,7 +45,6 @@ class UserForm(forms.ModelForm):
 
         return self.cleaned_data.get('full_name')
 
-
     def clean_date_of_birth(self):
         now = datetime.now()
         date_of_birth = self.cleaned_data.get('date_of_birth')
@@ -53,7 +52,6 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError('You must be 18 or older to sign up')
 
         return date_of_birth
-
 
     def save(self, commit=True):
         self.instance.first_name = self.cleaned_data['full_name'].split()[0]
@@ -77,7 +75,8 @@ class ThumbnailCheckboxWidget(forms.SelectMultiple):
         selected_choices = set(force_text(v) for v in selected_choices)
         output = []
         for option_value, option_label in self.choices:
-            output.append(self.render_option(selected_choices, option_value, option_label))
+            output.append(self.render_option(
+                selected_choices, option_value, option_label))
         return '\n'.join(output)
 
     def render_option(self, selected_choices, option_value, option_label):
@@ -91,20 +90,19 @@ class ThumbnailCheckboxWidget(forms.SelectMultiple):
         else:
             checked = ''
 
-        html = (
-             '<div class="col-md-3">\n'
-             '  <div class="thumbnail text-center">\n'
-             '    <img src="{img}">\n'
-             '    <div class="caption">\n'
-             '      <div class="checkbox">\n'
-             '         <label>\n'
-             '           <input type="checkbox" name="subscribed_shows" value={id} {checked}> {name}\n'
-             '         </label>\n'
-             '       </div>\n'
-             '    </div>\n'
-             '  </div>\n'
-             '</div>\n'
-        ).format(img=show.img, checked=checked, id=option_value, name=show.name)
+        html = ('<div class="col-md-3">\n'
+                '  <div class="thumbnail text-center">\n'
+                '    <img src="{img}">\n'
+                '    <div class="caption">\n'
+                '      <div class="checkbox">\n'
+                '         <label>\n'
+                '           <input type="checkbox" name="subscribed_shows" value={id} {checked}> {name}\n'
+                '         </label>\n'
+                '       </div>\n'
+                '    </div>\n'
+                '  </div>\n'
+                '</div>\n').format(img=show.img, checked=checked, id=option_value, name=show.name)
+
         return format_html(html)
 
 
@@ -115,6 +113,7 @@ class UserSubscriptionForm(forms.Form):
         label='',
         required=False,
     )
+
 
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):

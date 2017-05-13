@@ -39,7 +39,8 @@ class EmailConfirmationView(LoginRequiredMixin, SendConfirmationEmailMixin,
         self.request.user.confirmation_code = utils.generate_confirmation_code()
         self.request.user.save()
         self.send_confirmation_email()
-        messages.success(self.request, 'Email confirmation sent. Please check your email.')
+        messages.success(
+            self.request, 'Email confirmation sent. Please check your email.')
         return super().form_valid(form)
 
 

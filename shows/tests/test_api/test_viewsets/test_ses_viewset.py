@@ -9,7 +9,8 @@ from ....factories import UserFactory, SESFactory
 def test_it(api_client):
     user = UserFactory(email='user@example.com')
     ses = SESFactory(user=user)
-    response = api_client.get(reverse('ses-detail', kwargs={'email': ses.email}))
+    response = api_client.get(
+        reverse('ses-detail', kwargs={'email': ses.email}))
     assert response.status_code == 200
     assert response.json()['user']['email'] == user.email
 
@@ -21,5 +22,3 @@ def test_it_requires_authentication():
     ses = SESFactory(user=user)
     response = client.get(reverse('ses-detail', kwargs={'email': ses.email}))
     assert response.status_code == 401
-
-

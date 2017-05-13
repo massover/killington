@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 AUTORETRY_FOR_EXCEPTIONS = (NoSlotAvailableError, TimeoutError, RuntimeError,
                             RequestException, TimeLimitExceeded)
 
+
 @shared_task()
 def process_enterable_lotteries():
     for lottery in Lottery.enterable_objects.all():
@@ -85,7 +86,7 @@ def enter_user_in_lottery_for_flood(flood_id, ses_id, date_of_birth_offset):
 def run_shows_spider(*args, **kwargs):
     process = CrawlerProcess({
         'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
-        'ITEM_PIPELINES':  {'shows.pipelines.ShowPipeline': 100}
+        'ITEM_PIPELINES': {'shows.pipelines.ShowPipeline': 100}
     })
     process.crawl(ShowsSpider, *args, **kwargs)
     process.start()

@@ -18,7 +18,8 @@ def get_captcha_id(lottery):
     log_response(response)
     if settings.NO_SLOT_AVAILABLE_RESPONSE in response.text:
         time.sleep(settings.NO_SLOT_AVAILABLE_RETRY_DELAY)
-        message = 'No recaptcha slot available for lottery.id: {}'.format(lottery.id)
+        message = 'No recaptcha slot available for lottery.id: {}'.format(
+            lottery.id)
         raise NoSlotAvailableError(message)
 
     time.sleep(settings.AFTER_CAPTCHA_UPLOAD_REQUEST_DELAY)

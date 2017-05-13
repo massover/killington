@@ -11,9 +11,9 @@ from ...models import Lottery
 @patch('toocy.get_captcha_id')
 @patch('toocy.get_g_recaptcha_response')
 @patch('shows.broadway.enter_lottery')
-def test_it(_, __, ___,  enterable_lottery):
+def test_it(_, __, ___, enterable_lottery):
     tasks.process_enterable_lotteries()
-    
+
     enterable_lottery = Lottery.objects.get(id=enterable_lottery.id)
     entered_users = enterable_lottery.entered_users
     subscribed_users = enterable_lottery.performance.show.subscribed_users

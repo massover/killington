@@ -16,5 +16,3 @@ class SESSerializer(serializers.ModelSerializer):
     class Meta:
         model = SES
         fields = ('id', 'email', 'user', )
-
-

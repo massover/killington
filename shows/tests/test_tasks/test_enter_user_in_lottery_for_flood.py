@@ -14,7 +14,8 @@ from ...models import Flood
 def test_it(_, __, ___, flood_user, enterable_flood):
     ses = flood_user.ses_set.first()
     date_of_birth_offset = 1
-    tasks.enter_user_in_lottery_for_flood(enterable_flood.id, ses.id, date_of_birth_offset)
+    tasks.enter_user_in_lottery_for_flood(
+        enterable_flood.id, ses.id, date_of_birth_offset)
     enterable_flood = Flood.objects.get(id=enterable_flood.id)
     assert enterable_flood.entered_ses_set.count() == 1
     assert enterable_flood.entered_ses_set.first() == flood_user.ses_set.first()
@@ -25,6 +26,7 @@ def test_it(_, __, ___, flood_user, enterable_flood):
 def test_it_will_not_enter_users_when_lottery_is_not_enterable(flood_user, enterable_flood):
     ses = flood_user.ses_set.first()
     date_of_birth_offset = 1
-    tasks.enter_user_in_lottery_for_flood(enterable_flood.id, ses.id, date_of_birth_offset)
+    tasks.enter_user_in_lottery_for_flood(
+        enterable_flood.id, ses.id, date_of_birth_offset)
     enterable_flood = Flood.objects.get(id=enterable_flood.id)
     assert enterable_flood.entered_ses_set.count() == 0

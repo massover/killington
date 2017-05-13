@@ -11,5 +11,6 @@ before_script:
   - python manage.py collectstatic --no-input
   - make dropdb createdb migrate
 script:
+  - make lint
   - piprot
   - make test

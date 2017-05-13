@@ -33,4 +33,3 @@ def test_it_logs_users_in(client, user):
     url, status_code = response.redirect_chain[0]
     assert url == reverse('subscriptions')
     assert status_code == 302
-

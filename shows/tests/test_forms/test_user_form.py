@@ -14,11 +14,13 @@ def test_clean_full_name():
     with pytest.raises(forms.ValidationError):
         form.clean_full_name()
 
+
 def test_clean_date_of_birth():
     form = UserForm()
     form.cleaned_data = {'date_of_birth': datetime.now().date()}
     with pytest.raises(forms.ValidationError):
         form.clean_date_of_birth()
+
 
 def test_it_updates_css_class():
     form = UserForm()

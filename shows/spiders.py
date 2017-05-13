@@ -23,7 +23,8 @@ class ShowsSpider(scrapy.Spider):
 
             if selector.css('.lotteries-status').css('span.active'):
                 show_item.add_css('lottery_ends_at', '.lotteries-status::text')
-                next_page = selector.css('.lotteries-right a::attr(href)').extract_first()
+                next_page = selector.css(
+                    '.lotteries-right a::attr(href)').extract_first()
                 yield scrapy.Request(
                     next_page,
                     callback=self.parse_callback,
@@ -31,12 +32,12 @@ class ShowsSpider(scrapy.Spider):
                 )
 
             elif selector.css('.lotteries-status').css('span.pending'):
-                show_item.add_css('lottery_starts_at', '.lotteries-status::text')
+                show_item.add_css('lottery_starts_at',
+                                  '.lotteries-status::text')
                 yield show_item.load_item()
 
             elif selector.css('.lotteries-status').css('span.closed'):
                 pass
-
 
     def parse_callback(self, response):
         show_item = response.meta['show_item']
@@ -50,4 +51,3 @@ class ShowsSpider(scrapy.Spider):
             ".//input[starts-with(@name, 'dlslot_performance_id')]/@value"
         )
         yield show_item.load_item()
-

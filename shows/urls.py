@@ -20,7 +20,8 @@ urlpatterns = [
     url(r'^login/$', login,
         {'template_name': 'shows/login.html',
          'authentication_form': LoginForm,
-         'redirect_authenticated_user': True,},
+         'redirect_authenticated_user': True, },
         name='login'),
-    url(r'^.well-known/acme-challenge/.*$', views.acme_challenge, name='acme-challenge')
+    url(r'^.well-known/acme-challenge/.*$',
+        views.acme_challenge, name='acme-challenge')
 ]

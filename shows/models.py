@@ -1,4 +1,3 @@
-from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings

@@ -9,7 +9,8 @@ def test_login_is_required(client):
 
     assert len(response.redirect_chain) == 1
     url, status_code = response.redirect_chain[0]
-    login_url = settings.LOGIN_URL + '?next={}'.format(reverse('subscriptions'))
+    login_url = settings.LOGIN_URL + \
+        '?next={}'.format(reverse('subscriptions'))
     assert url == login_url
 
 
@@ -54,4 +55,3 @@ def test_subscribe_to_show(client, new_user, show):
     )
     assert response.status_code == 200
     assert new_user.subscribed_shows.count() == 1
-
