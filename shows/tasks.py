@@ -1,16 +1,16 @@
 import logging
+from datetime import timedelta
 
 from billiard.exceptions import TimeLimitExceeded
 from celery import shared_task
-from datetime import timedelta
-
 from requests import RequestException
 from scrapy.crawler import CrawlerProcess
 
+import toocy
+from toocy.exceptions import NoSlotAvailableError
+from . import broadway
 from .models import Lottery, User, Flood, SES
 from .spiders import ShowsSpider
-from .exceptions import NoSlotAvailableError
-from . import broadway
 
 logger = logging.getLogger(__name__)
 
@@ -41,8 +41,8 @@ def enter_user_in_lottery(user_id, lottery_id):
     except Lottery.DoesNotExist:
         return
 
-    captcha_id = broadway.get_captcha_id(lottery)
-    g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)
+    captcha_id = toocy.get_captcha_id(lottery)
+    g_recaptcha_response = toocy.get_g_recaptcha_response(captcha_id)
 
     user = User.objects.get(id=user_id)
     broadway.enter_lottery(g_recaptcha_response, lottery, user)
@@ -65,8 +65,8 @@ def enter_user_in_lottery_for_flood(flood_id, ses_id, date_of_birth_offset):
     except Lottery.DoesNotExist:
         return
 
-    captcha_id = broadway.get_captcha_id(lottery)
-    g_recaptcha_response = broadway.get_g_recaptcha_response(captcha_id)
+    captcha_id = toocy.get_captcha_id(lottery)
+    g_recaptcha_response = toocy.get_g_recaptcha_response(captcha_id)
 
     ses = SES.objects.get(id=ses_id)
     user = User(

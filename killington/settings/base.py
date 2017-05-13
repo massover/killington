@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'oauth2_provider',
     'shows',
+    'toocy',
 ]
 
 MIDDLEWARE = [
@@ -89,9 +90,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-G_RECAPTCHA_RESPONSE_TIMEOUT = 60
-AFTER_CAPTCHA_UPLOAD_REQUEST_DELAY = 20
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -190,3 +188,28 @@ from raven.transport import HTTPTransport
 RAVEN_CONFIG = {
     'transport': HTTPTransport
 }
+
+
+# 2Captcha settings https://2captcha.com/
+
+CAPTCHA_IN_URL = 'http://2captcha.com/in.php'
+CAPTCHA_RESULT_URL = 'http://2captcha.com/res.php'
+
+"""
+API Limit Constants
+
+https://2captcha.com/2captcha-api#limits
+
+- If server returns ERROR_NO_SLOT_AVAILABLE make a 5 seconds timeout before
+  sending next request.
+- If captcha is not solved yet - retry to get the answer after 5 seconds.
+- After uploading a captcha wait a least 5 seconds (10-20 for recaptcha)
+  and only then try to get the answer.
+"""
+NO_SLOT_AVAILABLE_RESPONSE = 'ERROR_NO_SLOT_AVAILABLE'
+NO_SLOT_AVAILABLE_RETRY_DELAY = 5
+G_RECAPTCHA_RESPONSE_RETRY_DELAY = 5
+G_RECAPTCHA_RESPONSE_TIMEOUT = 60
+AFTER_CAPTCHA_UPLOAD_REQUEST_DELAY = 20
+
+GOOGLE_CAPTCHA_SITE_KEY = '6LeIhQ4TAAAAACUkR1rzWeVk63ko-sACUlB7i932'

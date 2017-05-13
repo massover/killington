@@ -8,8 +8,8 @@ from ...models import Lottery
 
 
 @pytest.mark.django_db
-@patch('shows.broadway.get_captcha_id')
-@patch('shows.broadway.get_g_recaptcha_response')
+@patch('toocy.get_captcha_id')
+@patch('toocy.get_g_recaptcha_response')
 @patch('shows.broadway.enter_lottery')
 def test_it(_, __, ___,  enterable_lottery):
     tasks.process_enterable_lotteries()
