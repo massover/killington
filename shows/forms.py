@@ -53,6 +53,9 @@ class UserForm(forms.ModelForm):
 
         return date_of_birth
 
+    def clean(self):
+        raise forms.ValidationError('Registration is closed')
+
     def save(self, commit=True):
         self.instance.first_name = self.cleaned_data['full_name'].split()[0]
         self.instance.last_name = self.cleaned_data['full_name'].split()[1]

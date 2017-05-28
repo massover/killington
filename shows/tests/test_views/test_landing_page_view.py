@@ -24,6 +24,7 @@ def test_anonymous_user_required(client, user):
 
 
 @pytest.mark.django_db
+@pytest.mark.skip('Registration is closed')
 def test_post(client):
     data = {
         'full_name': '{} {}'.format(fake.first_name(), fake.last_name()),

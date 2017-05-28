@@ -131,7 +131,7 @@
 
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
-                <form class="text-center" method="post">
+                <form class="text-center" method="post" action="{{ request.path  }}#register">
                     {% csrf_token %}
                     {% bootstrap_form form show_label=False%}
                     <button type="submit" class="btn btn-white-fill">Sign Up</button>

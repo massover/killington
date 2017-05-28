@@ -48,6 +48,7 @@ def test_it_updates_email_placeholder():
 
 
 @pytest.mark.django_db
+@pytest.mark.skip('Registration is closed')
 def test_save():
     data = {
         'full_name': '{} {}'.format(fake.first_name(), fake.last_name()),
