@@ -15,6 +15,7 @@ class UserFactory(factory.DjangoModelFactory):
     is_superuser = factory.Faker('pybool')
     is_staff = factory.Faker('pybool')
     is_confirmed = True
+    is_active = True
     confirmation_code = factory.LazyFunction(utils.generate_confirmation_code)
 
     password = factory.PostGenerationMethodCall('set_password', 'password')

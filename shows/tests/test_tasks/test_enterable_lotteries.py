@@ -28,3 +28,11 @@ def test_it_skips_users_that_were_already_entered(mock, enterable_lottery):
     tasks.process_enterable_lotteries()
 
     assert not mock.called
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize('user__is_active', [False])
+@patch('shows.tasks.enter_user_in_lottery.delay')
+def test_it_skips_inactive_users(mock, user, enterable_lottery):
+    tasks.process_enterable_lotteries()
+    assert not mock.called

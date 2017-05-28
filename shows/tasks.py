@@ -21,7 +21,7 @@ AUTORETRY_FOR_EXCEPTIONS = (NoSlotAvailableError, TimeoutError, RuntimeError,
 @shared_task()
 def process_enterable_lotteries():
     for lottery in Lottery.enterable_objects.all():
-        for user in lottery.performance.show.subscribed_users.all():
+        for user in lottery.performance.show.subscribed_users.filter(is_active=True):
             if user.entered_lotteries.filter(id=lottery.id).exists():
                 continue
             enter_user_in_lottery.delay(user.id, lottery.id)
