@@ -28,7 +28,7 @@ class FloodAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = ('id', 'email', 'first_name', 'last_name', 'date_of_birth',
-                    'zipcode', 'is_staff', )
+                    'zipcode', 'is_staff', 'is_active', )
     search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email',)
     actions = ['bulk_create_ses_emails', ]
