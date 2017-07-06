@@ -1,4 +1,4 @@
-from oauth2_provider.ext.rest_framework import TokenHasScope
+from oauth2_provider.contrib.rest_framework import TokenHasScope
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 
