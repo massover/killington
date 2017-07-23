@@ -16,14 +16,16 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 #
 # If the task_routes can be replaced using `app.autodiscover_tasks()` instead
 # of being explicit, then do it.
-app.conf.task_routes = {
-    'shows.tasks.process_enterable_lotteries': {'queue': 'celery'},
-    'shows.tasks.enter_user_in_lottery': {'queue': 'celery'},
-    'shows.tasks.run_shows_spider': {'queue': 'celery'},
+# app.conf.task_routes = {
+#     'shows.tasks.process_enterable_lotteries': {'queue': 'celery'},
+#     'shows.tasks.enter_user_in_lottery': {'queue': 'celery'},
+#     'shows.tasks.run_shows_spider': {'queue': 'celery'},
+#
+#     'shows.tasks.process_enterable_floods': {'queue': 'flood'},
+#     'shows.tasks.enter_user_in_lottery_for_flood': {'queue': 'flood'}
+# }
 
-    'shows.tasks.process_enterable_floods': {'queue': 'flood'},
-    'shows.tasks.enter_user_in_lottery_for_flood': {'queue': 'flood'}
-}
+app.autodiscover_tasks()
 
 # shows.tasks.run_shows_spider needs to scrape the data off the site once a
 # lottery is open to set lottery objects as enterable_objects. run_shows_spider
