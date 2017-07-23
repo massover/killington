@@ -27,6 +27,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
+
 # shows.tasks.run_shows_spider needs to scrape the data off the site once a
 # lottery is open to set lottery objects as enterable_objects. run_shows_spider
 # finishes on the order of seconds, eg.
